@@ -1,0 +1,46 @@
+<%- include('partials/header') %>
+<div class="container rounded bg-white mt-5 mb-5">
+    <div class="row">
+      <form class="" action="/myprofile" method="POST">
+
+
+        <div class="col-md-3 border-right">
+
+            <div class="d-flex flex-column align-items-center text-center p-3 py-5"><label class="labels">Your current profile</label><img class="rounded-circle mt-5" src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQF2psCzfbB611rnUhxgMi-lc2oB78ykqDGYb4v83xQ1pAbhPiB&usqp=CAU"><span class="font-weight-bold">Amelly</span><span class="text-black-50">amelly12@bbb.com</span><span> </span></div>
+        </div>
+        <div class="col-md-5 border-right">
+            <div class="p-3 py-5">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h4 class="text-right">Profile Settings</h4>
+                </div>
+                <div class="row mt-2">
+                  <div class="col-md-12"><label class="labels">Name</label><input name="displayname" type="text" class="form-control" placeholder="Your display name" value="<%=usersWithSecrets.displayname %>"></div>
+              </div>
+                <div class="row mt-3">
+                  <div class="col-md-12"><label class="labels">About Yourself</label><textarea name="about" class="form-control" placeholder="Introduce yourself!" rows="4" cols="50" value="<%=usersWithSecrets.about %>"></textarea></div>
+                  <div class="col-md-12"><label class="labels">Registered email</label>
+                    <% if(usersWithSecrets.username!=undefined){ %>
+                      <br><p><%=usersWithSecrets.username %></p></div>
+                      <% } else{%>
+                      <br><p>Signed up with google</p></div>
+                      <% } %>
+                      Select an image to upload:
+                      <input type="file" name="profilepic">
+                      <input type="submit" value="Upload Image">
+                  </div>
+            </div>
+
+                <div class="mt-5 text-center"><button type="submit" class="btn btn-primary profile-button" type="button">Save Profile</button></div>
+</form>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="p-3 py-5">
+
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+<%- include('partials/footer') %>

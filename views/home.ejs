@@ -1,19 +1,29 @@
 
-<%- include("partials/header"); -%>
-    <h1>Home</h1>
-    <p> <%= startingContent %> </p>
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title>Daily Blog</title>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/bootstrap-social.css">
+  <link rel="stylesheet" href="css/styles.css">
+
+    <div class="container">
 
 
-  <%  posts.forEach(function(post){ %>
+<div class="jumbotron centered">
+  <div class="container">
 
-    <h1><%=post.title%></h1>
-    <p>
-    <%=post.content.substring(0, 100) + " ..."%>
-    <a href="/eachpost/<%=post._id%>">Read More</a>
-    </p>
+    <h1 class="display-3" style="color:blue;">Daily Blog</h1>
+    <p class="lead" style="color:green;">Share your thoughts with the world. Read theirs.</p>
+    <hr>
+    <a class="btn btn-light btn-lg" href="/register" role="button">Register</a>
+    <a class="btn btn-dark btn-lg" href="/login" role="button">Login</a>
 
+  </div>
+</div>
 
-    <% }) %>
-
-
-<%- include("partials/footer"); -%>
+<%- include('partials/footer') %>

@@ -1,107 +1,336 @@
 //jshint esversion:6
-
+require('dotenv').config();
 const express = require("express");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
+const session = require('express-session');
+const passport = require("passport");
+const passportLocalMongoose = require("passport-local-mongoose");
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const findOrCreate = require('mongoose-findorcreate');
+const multer = require('multer');
+let file_name,file_name2,file_name3;
+const storage = multer.diskStorage({
+  destination: function(req, file, cb) {
+    cb(null, './public/upload/');
+  },
+  filename: function(req, file, cb) {
+var c=[],a,b,d,str=file.originalname;
+a=str.substring(str.indexOf("."),str.length+1);
 
-const homeStartingContent = "Lacus vel facilisis volutpat est velit egestas dui id ornare. Semper auctor neque vitae tempus quam. Sit amet cursus sit amet dictum sit amet justo. Viverra tellus in hac habitasse. Imperdiet proin fermentum leo vel orci porta. Donec ultrices tincidunt arcu non sodales neque sodales ut. Mattis molestie a iaculis at erat pellentesque adipiscing. Magnis dis parturient montes nascetur ridiculus mus mauris vitae ultricies. Adipiscing elit ut aliquam purus sit amet luctus venenatis lectus. Ultrices vitae auctor eu augue ut lectus arcu bibendum at. Odio euismod lacinia at quis risus sed vulputate odio ut. Cursus mattis molestie a iaculis at erat pellentesque adipiscing.";
-const aboutContent = "Hac habitasse platea dictumst vestibulum rhoncus est pellentesque. Dictumst vestibulum rhoncus est pellentesque elit ullamcorper. Non diam phasellus vestibulum lorem sed. Platea dictumst quisque sagittis purus sit. Egestas sed sed risus pretium quam vulputate dignissim suspendisse. Mauris in aliquam sem fringilla. Semper risus in hendrerit gravida rutrum quisque non tellus orci. Amet massa vitae tortor condimentum lacinia quis vel eros. Enim ut tellus elementum sagittis vitae. Mauris ultrices eros in cursus turpis massa tincidunt dui.";
-const contactContent = "Scelerisque eleifend donec pretium vulputate sapien. Rhoncus urna neque viverra justo nec ultrices. Arcu dui vivamus arcu felis bibendum. Consectetur adipiscing elit duis tristique. Risus viverra adipiscing at in tellus integer feugiat. Sapien nec sagittis aliquam malesuada bibendum arcu vitae. Consequat interdum varius sit amet mattis. Iaculis nunc sed augue lacus. Interdum posuere lorem ipsum dolor sit amet consectetur adipiscing elit. Pulvinar elementum integer enim neque. Ultrices gravida dictum fusce ut placerat orci nulla. Mauris in aliquam sem fringilla ut morbi tincidunt. Tortor posuere ac ut consequat semper viverra nam libero.";
+    file_name=new Date().toISOString() + req.user._id + a;
+  cb(null, file_name);
+
+// if( file_name2==undefined && file_name3==undefined && file_name!=undefined)
+// file_name3=file_name;
+// if( file_name3!=undefined && file_name2==undefined && file_name!=undefined)
+// file_name2=file_name;
+    // console.log("====" + file_name + " here in multer storage");
+
+    // if(file_name!=file_name2 && file_name2===file_name3)
+    // file_name2=file_name;
+
+  }
+});
+const upload = multer({storage: storage});
+
+var fs = require('fs');
+const cors = require('cors');
+var path = require('path');
+
+
 
 const app = express();
 
-app.set('view engine', 'ejs');
-
-app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
+app.set('view engine', 'ejs');
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
 
-mongoose.connect("mongodb://localhost:27017/blogDB", {useNewUrlParser: true, useUnifiedTopology: true });
+app.use(session({
+  secret: "Our little secret.",
+  resave: false,
+  saveUninitialized: false
+}));
 
-const postSchema = {
-  title: String,
-  content: String
-};
+app.use(passport.initialize());
+app.use(passport.session());
 
-const Post = mongoose.model("Post", postSchema);
+mongoose.connect("mongodb://localhost:27017/userDB", {useNewUrlParser: true});
+mongoose.set("useCreateIndex", true);
+
+const userSchema = new mongoose.Schema ({
+  email: String,
+  password: String,
+  googleId: String,
+  displayname: String,
+  about: String,
+  secret: [{title: String, content: String,blogImg:  String, blogImg2:  String, blogImg3:  String }],
+  profilepic: String
+ //  ,
+ //  //img
+ // img: String
+ //    //img
+
+});
+
+userSchema.plugin(passportLocalMongoose);
+userSchema.plugin(findOrCreate);
+
+const User = new mongoose.model("User", userSchema);
+
+passport.use(User.createStrategy());
+
+passport.serializeUser(function(user, done) {
+  done(null, user.id);
+});
+
+passport.deserializeUser(function(id, done) {
+  User.findById(id, function(err, user) {
+    done(err, user);
+  });
+});
+
+passport.use(new GoogleStrategy({
+    clientID: process.env.CLIENT_ID,
+    clientSecret: process.env.CLIENT_SECRET,
+    callbackURL: "http://localhost:3000/auth/google/secrets",
+    userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo"
+  },
+  function(accessToken, refreshToken, profile, cb) {
+    console.log("google profile accessed succesfully \n");
+
+    User.findOrCreate({ googleId: profile.id }, function (err, user) {
+      return cb(err, user);
+    });
+  }
+));
+
 
 app.get("/", function(req, res){
-
-  Post.find({}, function(err, posts){
-    res.render("home", {
-      startingContent: homeStartingContent,
-      posts: posts
-      });
-  });
+  res.render("home");
 });
 
-app.get("/compose", function(req, res){
-  res.render("compose");
-});
+app.get("/auth/google",
+  passport.authenticate('google', { scope: ["profile"] })
+);
 
-app.post("/compose", function(req, res){
-  const post = new Post({
-    title: req.body.postTitle,
-    content: req.body.postBody
+app.get("/auth/google/secrets",
+  passport.authenticate('google', { failureRedirect: "/login" }),
+  function(req, res) {
+    // Successful authentication, redirect to secrets.
+    res.redirect("/secrets");
   });
 
+app.get("/login", function(req, res){
+  res.render("login");
+});
 
-  post.save(function(err){
-    if (!err){
-        res.redirect("/");
+app.get("/register", function(req, res){
+  res.render("register");
+});
+
+app.get("/me", function(req, res){
+  if (req.isAuthenticated()){
+    User.findById(req.user.id, function(err, foundUser){
+      if (err) {
+        console.log(err);
+      } else {
+        if (foundUser) {
+
+          res.render("me", {usersWithSecrets: foundUser});
+
+        }
+      }
+    });
+  } else {
+    res.redirect("/login");
+  }
+
+
+});
+
+//imgtest
+//imgtest
+
+app.get("/secrets", function(req, res){
+  User.find({"secret": {$ne: null}}, function(err, foundUsers){
+    if (err){
+      console.log(err);
+    } else {
+      if (foundUsers) {
+        res.render("secrets", {usersWithSecrets: foundUsers});
+      }
     }
   });
+});
+//img
+app.get('/imgtest', (req, res) => {
+    User.find({}, (err, items) => {
+        if (err) {
+            console.log(err);
+            res.status(500).send('An error occurred', err);
+        }
+        else {
+            res.render('imgtest', { items: items });
+        }
+    });
+});
+
+
+
+app.get("/submit", function(req, res){
+  if (req.isAuthenticated()){
+    res.render("submit");
+  } else {
+    res.redirect("/login");
+  }
 });
 
 app.post("/lookfor", function(req, res){
   const requestedPostId = req.body.lookfor;
-console.log(requestedPostId);
-      Post.find({title: requestedPostId}, function(err, posts){
+
+      User.find({ "secret.title": requestedPostId}, function(err, posts){
+
         res.render("post", {
-        posts: posts
+        posts: posts,
+        searched:requestedPostId
         });
       });
 });
 
-app.get("/posts/:postId", function(req, res){
+app.post("/submit",upload.array('blogImg',3), function(req, res){
+  const submittedTitle = req.body.stitle;
+  const submittedContent = req.body.scontent;
+  var submittedImg,submittedImg2,submittedImg3;
+  console.log(req.files);
 
-const requestedPostId = req.params.postId;
+    if(req.files[0]!=undefined){
+    submittedImg = req.files[0].filename;}
+    if(req.files[1]!=undefined){
+    submittedImg2 = req.files[1].filename;}
+    if(req.files[2]!=undefined){
+    submittedImg3 = req.files[2].filename;}
+// console.log("====" + submittedImg+ " here in submit");
+//Once the user is authenticated and their session gets saved, their user details are saved to req.user.
+  // console.log(req.user.id);
 
-  // Post.findOne({_id: requestedPostId}, function(err, post){
-  //   res.render("post", {
-  //     title: post.title,
-  //     content: post.content
-  //   });
-  // });
+  User.findById(req.user.id, function(err, foundUser){
+    if (err) {
+      console.log(err);
+    } else {
+      if (foundUser) {
+
+        var friend = { title: submittedTitle, content: submittedContent, blogImg: submittedImg, blogImg2: submittedImg2, blogImg3: submittedImg3};
+console.log(friend );
+        foundUser.secret.push(friend);
+        foundUser.save(function(){
+          res.redirect("/secrets");
+        });
+      }
+    }
+  });
+});
 
 
+app.get("/logout", function(req, res){
+  req.logout();
+  res.redirect("/");
+});
 
-    // Post.findOne({title: requestedPostId}, function(err, post){
-    //   console.log(post);
-    //   res.render("post", {
-    //     title: post.title,
-    //     content: post.content
-    //   });
-    // });
+app.post("/register", function(req, res){
 
-    Post.find({title: requestedPostId}, function(err, posts){
-      res.render("post", {
-      posts: posts
+  User.register({username: req.body.username}, req.body.password, function(err, user){
+    if (err) {
+      console.log(err);
+      res.redirect("/register");
+    } else {
+      passport.authenticate("local")(req, res, function(){
+        res.redirect("/secrets");
       });
-    });
+    }
+  });
 
 });
+
+app.post("/login", function(req, res){
+
+  const user = new User({
+    username: req.body.username,
+    password: req.body.password
+  });
+
+  req.login(user, function(err){
+    if (err) {
+      console.log(err);
+    } else {
+      passport.authenticate("local")(req, res, function(){
+        res.redirect("/secrets");
+      });
+    }
+  });
+
+});
+
+app.get("/myprofile", function(req, res){
+
+  if (req.isAuthenticated()){
+    User.findById(req.user.id, function(err, foundUser){
+      if (err) {
+        console.log(err);
+      } else {
+        if (foundUser) {
+
+          res.render("myprofile", {usersWithSecrets: foundUser});
+
+        }
+      }
+    });
+  } else {
+    res.redirect("/login");
+  }
+
+
+});
+
+app.post("/myprofile",upload.single('profilepic'), function(req,res){
+  const displayname = req.body.displayname;
+  const about = req.body.about;
+  const profilepic = req.file;
+  console.log(profilepic);
+  User.findById(req.user.id, function(err, foundUser){
+    if (err) {
+      console.log(err);
+    } else {
+      if (foundUser) {
+        foundUser.displayname=displayname;
+        foundUser.about=about;
+        foundUser.save(function(){
+          res.redirect("/secrets");
+        });
+      }
+    }
+  });
+});
+
+
+
+
 
 app.get("/eachpost/:postId", function(req, res){
 
 const requestedPostId = req.params.postId;
 
-  Post.findOne({_id: requestedPostId}, function(err, posts){
+  User.findOne({ "secret._id": requestedPostId}, function(err, posts){
+    console.log(posts+"==posts");
     res.render("eachpost", {
       title: posts.title,
       content: posts.content
     });
   });
+
 
 
 
@@ -122,15 +351,11 @@ const requestedPostId = req.params.postId;
 
 });
 
-app.get("/about", function(req, res){
-  res.render("about", {aboutContent: aboutContent});
-});
-
-app.get("/contact", function(req, res){
-  res.render("contact", {contactContent: contactContent});
-});
 
 
-app.listen(3000, function() {
-  console.log("Server started on port 3000");
+
+
+
+app.listen('3000' || process.env.PORT, function() {
+  console.log("Server started on port 3000.");
 });

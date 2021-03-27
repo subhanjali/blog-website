@@ -1,0 +1,29 @@
+<%- include('partials/header') %>
+
+<div class="container">
+  <div class="jumbotron centered">
+    <h1 class="display-3" style="color:blue;">Daily Blog</h1>
+    <p class="secret-text">Share your thoughts!</p>
+
+    <form action="/submit" method="POST" enctype="multipart/form-data">
+
+      <div class="form-group">
+        <input type="text" class="form-control text-center" name="stitle" placeholder="Title of your blog">
+        <textarea type="text" class="form-control text-center" name="scontent" placeholder="Content" rows="5" cols="30"></textarea>
+      </div>
+      Select an image to upload:
+      <input type="file" name="blogImg"  multiple/>
+        <input type="file" name="blogImg"  multiple/>
+          <input type="file" name="blogImg"  multiple/>
+      <input type="submit" value="Upload Image" accept='image/*'>
+      <button type="submit" class="btn btn-dark">Submit a blog</button>
+
+    </form>
+
+
+
+
+  </div>
+
+</div>
+<%- include('partials/footer') %>

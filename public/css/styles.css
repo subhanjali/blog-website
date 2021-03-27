@@ -3,9 +3,22 @@ html {
   position: relative;
 
 }
-body{color: white;
-  background-color: #2A363B;
+body{color: darkblue;
+  background-color: darkblue;
 }
+
+.centered {
+    padding-top: 200px;
+    text-align: center;
+}
+
+.secret-text {
+  text-align: center;
+  font-size: 2rem;
+  color: white;
+  background-color: #000;
+}
+
 
 .container-fluid {
     padding-top: 70px;
@@ -45,7 +58,7 @@ footer {
 footer p {
  padding: 1%;
 	font-size: 1.2em;
-  color: #fff;
+  color: darkblue;
 }
 
 .img{

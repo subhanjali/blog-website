@@ -5,12 +5,14 @@
 
   <%  posts.forEach(function(post){ %>
 
-    <h1><%=post.title%></h1>
+<%  for(var i=0;i<post.secret.length;i++){ %>
+  <% if(searched===post.secret[i].title){%>
+    <h1><%=post.secret[i].title%></h1>
     <p>
-    <%=post.content.substring(0, 100) + " ..."%>
-    <a href="/eachpost/<%=post._id%>">Read More</a>
+    <%=post.secret[i].content+ " ..."%>
+    <a href="/eachpost/<%=post.secret[i]._id%>">Read More</a>
     </p>
-
+<%}} %>
 
     <% }) %>
 
