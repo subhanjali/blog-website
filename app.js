@@ -10,6 +10,8 @@ const passportLocalMongoose = require("passport-local-mongoose");
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const findOrCreate = require('mongoose-findorcreate');
 const multer = require('multer');
+var GphApiClient = require('giphy-js-sdk-core')
+client = GphApiClient("whBBdauufJ4Enp6BBxa2Wc0VUVQdUyek")
 let file_name,file_name2,file_name3;
 const storage = multer.diskStorage({
   destination: function(req, file, cb) {
@@ -62,13 +64,14 @@ mongoose.connect("mongodb://localhost:27017/userDB", {useNewUrlParser: true});
 mongoose.set("useCreateIndex", true);
 
 const userSchema = new mongoose.Schema ({
-  email: String,
+  username: { type: String, sparse: true },
   password: String,
   googleId: String,
   displayname: String,
   about: String,
-  secret: [{title: String, content: String,blogImg:  String, blogImg2:  String, blogImg3:  String }],
-  profilepic: String
+  secret: [{title: String, content: String,blogImg:  String, blogImg2:  String, blogImg3:  String , tags: [String]}],
+  profilepic: String,
+
  //  ,
  //  //img
  // img: String
@@ -140,7 +143,7 @@ app.get("/me", function(req, res){
       } else {
         if (foundUser) {
 
-          res.render("me", {usersWithSecrets: foundUser});
+          res.render("me", {usersWithSecrets: foundUser, theuser: req.user.id});
 
         }
       }
@@ -167,17 +170,6 @@ app.get("/secrets", function(req, res){
   });
 });
 //img
-app.get('/imgtest', (req, res) => {
-    User.find({}, (err, items) => {
-        if (err) {
-            console.log(err);
-            res.status(500).send('An error occurred', err);
-        }
-        else {
-            res.render('imgtest', { items: items });
-        }
-    });
-});
 
 
 
@@ -192,20 +184,54 @@ app.get("/submit", function(req, res){
 app.post("/lookfor", function(req, res){
   const requestedPostId = req.body.lookfor;
 
-      User.find({ "secret.title": requestedPostId}, function(err, posts){
+      // User.find({ "secret.title": requestedPostId}, function(err, posts){
+      //
+      //   res.render("post", {
+      //   posts: posts,
+      //   searched:requestedPostId
+      //   });
+      // });
 
-        res.render("post", {
-        posts: posts,
-        searched:requestedPostId
-        });
+      User.find(
+    { $and: [ { $or:[{ "secret.title": { "$regex": requestedPostId, "$options": "i" }}, {"secret.tags": requestedPostId} ]}]},
+    function(err, posts) {
+      console.log(posts+ "ca$$");
+      res.render("post", {
+      posts: posts,
+      searched:requestedPostId
       });
+    }
+);
+});
+
+app.get("/myprofile", function(req, res){
+
+  if (req.isAuthenticated()){
+    User.findById(req.user.id, function(err, foundUser){
+      if (err) {
+        console.log(err);
+      } else {
+        if (foundUser) {
+
+          res.render("myprofile", {usersWithSecrets: foundUser});
+
+        }
+      }
+    });
+  } else {
+    res.redirect("/login");
+  }
+
+
 });
 
 app.post("/submit",upload.array('blogImg',3), function(req, res){
   const submittedTitle = req.body.stitle;
   const submittedContent = req.body.scontent;
+  const submittedTags = req.body.stags;
+  var tags = submittedTags.split(" ");
   var submittedImg,submittedImg2,submittedImg3;
-  console.log(req.files);
+
 
     if(req.files[0]!=undefined){
     submittedImg = req.files[0].filename;}
@@ -216,6 +242,24 @@ app.post("/submit",upload.array('blogImg',3), function(req, res){
 // console.log("====" + submittedImg+ " here in submit");
 //Once the user is authenticated and their session gets saved, their user details are saved to req.user.
   // console.log(req.user.id);
+//   client.search('gifs', {"q": "cats"})
+//   .then((response) => {
+//     response.data.forEach((gifObject) => {
+//       console.log(gifObject);
+//     });
+//   })
+//   .catch((err) => {
+//
+//   });
+//
+// /// Sticker Search
+// client.search('stickers', {"q": "cats"})
+//   .then((response) => {
+//
+//   })
+//   .catch((err) => {
+//
+//   });
 
   User.findById(req.user.id, function(err, foundUser){
     if (err) {
@@ -223,9 +267,56 @@ app.post("/submit",upload.array('blogImg',3), function(req, res){
     } else {
       if (foundUser) {
 
-        var friend = { title: submittedTitle, content: submittedContent, blogImg: submittedImg, blogImg2: submittedImg2, blogImg3: submittedImg3};
-console.log(friend );
+        var friend = { title: submittedTitle, content: submittedContent, blogImg: submittedImg, blogImg2: submittedImg2, blogImg3: submittedImg3, tags: tags};
+        console.log(friend);
+
         foundUser.secret.push(friend);
+        foundUser.save(function(){
+          res.redirect("/secrets");
+        });
+      }
+    }
+  });
+});
+
+app.post("/me", function(req, res){
+
+
+User.findById(req.body.theuser, function(err, foundUser){
+  if (err) {
+    console.log(err);
+  } else {
+    if (foundUser) {
+        //
+        console.log(foundUser.secret + "before" );
+          foundUser.secret.pull({ _id: req.body.theid });
+          console.log(foundUser.secret + "after" );
+      // var friend = { title: submittedTitle, content: submittedContent, blogImg: submittedImg, blogImg2: submittedImg2, blogImg3: submittedImg3, tags: tags};
+      // console.log(friend);
+      //
+      // foundUser.secret.push(friend);
+      foundUser.save(function(){
+        res.redirect("/me");
+      });
+    }
+  }
+});
+
+});
+
+app.post("/myprofile",upload.single('profilepic'), function(req, res){
+  const displayname = req.body.displayname;
+  const about = req.body.about;
+  const profilepic = req.file.filename;
+
+  User.findById(req.user.id, function(err, foundUser){
+    if (err) {
+      console.log(err);
+    } else {
+      if (foundUser) {
+        foundUser.displayname=displayname;
+        foundUser.about=about;
+        foundUser.profilepic=profilepic;
         foundUser.save(function(){
           res.redirect("/secrets");
         });
@@ -241,7 +332,7 @@ app.get("/logout", function(req, res){
 });
 
 app.post("/register", function(req, res){
-
+console.log(req.body);
   User.register({username: req.body.username}, req.body.password, function(err, user){
     if (err) {
       console.log(err);
@@ -274,46 +365,9 @@ app.post("/login", function(req, res){
 
 });
 
-app.get("/myprofile", function(req, res){
-
-  if (req.isAuthenticated()){
-    User.findById(req.user.id, function(err, foundUser){
-      if (err) {
-        console.log(err);
-      } else {
-        if (foundUser) {
-
-          res.render("myprofile", {usersWithSecrets: foundUser});
-
-        }
-      }
-    });
-  } else {
-    res.redirect("/login");
-  }
 
 
-});
 
-app.post("/myprofile",upload.single('profilepic'), function(req,res){
-  const displayname = req.body.displayname;
-  const about = req.body.about;
-  const profilepic = req.file;
-  console.log(profilepic);
-  User.findById(req.user.id, function(err, foundUser){
-    if (err) {
-      console.log(err);
-    } else {
-      if (foundUser) {
-        foundUser.displayname=displayname;
-        foundUser.about=about;
-        foundUser.save(function(){
-          res.redirect("/secrets");
-        });
-      }
-    }
-  });
-});
 
 
 
@@ -325,9 +379,7 @@ const requestedPostId = req.params.postId;
 
   User.findOne({ "secret._id": requestedPostId}, function(err, posts){
     console.log(posts+"==posts");
-    res.render("eachpost", {
-      title: posts.title,
-      content: posts.content
+    res.render("eachpost", { posts:posts, theid:requestedPostId
     });
   });
 

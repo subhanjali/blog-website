@@ -39,15 +39,6 @@ body {
   align-items: center;
 }
 
-button {
-  width: 160px;
-  height: 50px;
-  transform: translate(-30%, -30%);
-  background-color: black;
-  color: #fff;
-  border-radius: 5px;
-  border: none;
-}
 
 .profile-img img {
   width: 70px;
@@ -142,8 +133,8 @@ a:hover {
       </div>
     </div>
     <button class="edit">
-      <i class="fas fa-edit"></i>
-      Edit
+
+    <a class="btn btn-light btn-lg" href="/myprofile" role="button"> <i class="fas fa-edit"></i>Edit</a>
     </button>
   </div>
   <!-- break -->
@@ -173,19 +164,52 @@ a:hover {
 
     <% usersWithSecrets.secret.forEach((user, i) => {%>
 
+
   <h3 class="" style="color:black;"><%= user.title%></h3><br>
   <p ><%=  user.content%></p>
-  <% if(user.blogImg!=undefined){%>
-    <img style=" width:20%;" alt="here is it <%=user.blogImg%>" src="upload/<%= user.blogImg%>">    
+  <% if(user.blogImg!=undefined){var str=user.blogImg;%>
+    <% var ext = str.substring(str.lastIndexOf("."),str.length+1);%>
+    <% if(ext=== ".MP4" || ext=== ".MOV" || ext=== ".WMV" || ext=== ".WEBM"){%>
+  <video  style=" width:50%;" autoplay poster="posterimage.jpg" controls>
+    <source src="upload/<%= user.blogImg%>" type="video/mp4">
+  </video>
+    <% } else{%>
+    <img style=" width:20%;" alt="here is it <%=user.blogImg%>" src="upload/<%= user.blogImg%>">
   <% } %>
 
-  <% if(user.blogImg2!=undefined){%>
-      <img style=" width:10%;" alt="here is it <%=user.blogImg%>" src="upload/<%= user.blogImg2%>">
   <% } %>
-  <% if(user.blogImg3!=undefined){%>
-      <img style=" width:10%;" alt="here is it <%=user.blogImg%>" src="upload/<%= user.blogImg3%>">
+
+  <% if(user.blogImg2!=undefined){var str=user.blogImg2;%>
+    <% var ext = str.substring(str.lastIndexOf("."),str.length+1);%>
+    <% if(ext=== ".MP4" || ext=== ".MOV" || ext=== ".WMV" || ext=== ".WEBM"){%>
+  <video  style=" width:50%;" autoplay poster="posterimage.jpg" controls>
+    <source src="upload/<%= user.blogImg2%>" type="video/mp4">
+  </video>
+    <% } else{%>
+      <img style=" width:50%;" alt="here is it <%=user.blogImg%>" src="upload/<%= user.blogImg2%>">
   <% } %>
-  <% }) %>
+  <% } %>
+  <% if(user.blogImg3!=undefined){var str=user.blogImg3;%>
+    <% var ext = str.substring(str.lastIndexOf("."),str.length+1);%>
+    <% if(ext=== ".MP4" || ext=== ".MOV" || ext=== ".WMV" || ext=== ".WEBM"){%>
+  <video  style=" width:50%;" autoplay poster="posterimage.jpg" controls>
+    <source src="upload/<%= user.blogImg2%>" type="video/mp4">
+  </video>
+    <% } else{%>
+      <img style=" width:50%;" alt="here is it <%=user.blogImg%>" src="upload/<%= user.blogImg3%>">
+  <% } %>
+  <% } %>
+  <br>
+  <% for(var j=0;j<user.tags.length;j++){%>
+  <span style="color:white; background:darkblue;"><%=  user.tags[j]%></span>
+    <% } %><form action="/me" method="POST" >
+      <input type="hidden" type="text" name="theuser" value="<%=  theuser%>" >
+      <input type="hidden" type="text" name="theid" value="<%=  user._id%>" >
+
+    <button type="submit" style="font-size:24px"><i class="fa fa-trash-o"></i></button>
+    </form>
+
+  <%}) %>
   <%  %>
 
 

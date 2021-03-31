@@ -10,13 +10,18 @@
       <div class="form-group">
         <input type="text" class="form-control text-center" name="stitle" placeholder="Title of your blog">
         <textarea type="text" class="form-control text-center" name="scontent" placeholder="Content" rows="5" cols="30"></textarea>
+        <input type="text" class="form-control text-center" name="stags" value="" placeholder="Add tags relating to your blog">
       </div>
       Select an image to upload:
       <input type="file" name="blogImg"  multiple/>
         <input type="file" name="blogImg"  multiple/>
           <input type="file" name="blogImg"  multiple/>
       <input type="submit" value="Upload Image" accept='image/*'>
+
+
+    <div class="container container-padding50 js-container"></div>
       <button type="submit" class="btn btn-dark">Submit a blog</button>
+
 
     </form>
 
@@ -26,4 +31,5 @@
   </div>
 
 </div>
+
 <%- include('partials/footer') %>
