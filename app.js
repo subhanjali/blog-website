@@ -285,8 +285,10 @@ app.post("/submit",upload.array('blogImg',3), function(req, res){
 
         var friend = { title: submittedTitle, content: submittedContent, blogImg: submittedImg, blogImg2: submittedImg2, blogImg3: submittedImg3, tags: tags};
         // console.log(friend);
-
+        if(foundUser.secret.length===0)
+        foundUser.following.push(req.user.id);
         foundUser.secret.push(friend);
+
         foundUser.save(function(){
           res.redirect("/secrets");
         });
@@ -319,7 +321,7 @@ app.post("/myprofile",upload.single('profilepic'), function(req, res){
   const displayname = req.body.displayname;
   const about = req.body.about;
   var profilepic ;
-  if(profilepic !=undefined)
+  if(req.file.filename !=undefined)
   profilepic = req.file.filename;
 
   User.findById(req.user.id, function(err, foundUser){
