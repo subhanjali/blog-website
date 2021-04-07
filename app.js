@@ -10,8 +10,8 @@ const passportLocalMongoose = require("passport-local-mongoose");
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const findOrCreate = require('mongoose-findorcreate');
 const multer = require('multer');
-var GphApiClient = require('giphy-js-sdk-core')
-client = GphApiClient("whBBdauufJ4Enp6BBxa2Wc0VUVQdUyek")
+var GphApiClient = require('giphy-js-sdk-core');
+client = GphApiClient("whBBdauufJ4Enp6BBxa2Wc0VUVQdUyek");
 let file_name,file_name2,file_name3;
 const storage = multer.diskStorage({
   destination: function(req, file, cb) {
@@ -69,9 +69,11 @@ const userSchema = new mongoose.Schema ({
   googleId: String,
   displayname: String,
   about: String,
-  secret: [{title: String, content: String,blogImg:  String, blogImg2:  String, blogImg3:  String , tags: [String]}],
+  secret: [{title: String, content: String,blogImg:  String, blogImg2:  String, blogImg3:  String , tags: [String], favourites: [String]}],
   profilepic: String,
-
+  favourited: [String],
+  followers: [String],
+  following: [String]
  //  ,
  //  //img
  // img: String
@@ -103,7 +105,7 @@ passport.use(new GoogleStrategy({
     userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo"
   },
   function(accessToken, refreshToken, profile, cb) {
-    console.log("google profile accessed succesfully \n");
+    // console.log("google profile accessed succesfully \n");
 
     User.findOrCreate({ googleId: profile.id }, function (err, user) {
       return cb(err, user);
@@ -159,15 +161,29 @@ app.get("/me", function(req, res){
 //imgtest
 
 app.get("/secrets", function(req, res){
+  if (req.isAuthenticated()){
   User.find({"secret": {$ne: null}}, function(err, foundUsers){
     if (err){
       console.log(err);
     } else {
       if (foundUsers) {
-        res.render("secrets", {usersWithSecrets: foundUsers});
+        // console.log(req.user.following.includes(JSON.stringify(foundUsers[0]._id)) + " this ");
+        var them = [];
+        for(var i =0 ;i<req.user.following.length;i++){
+          for(var j=0;j<foundUsers.length;j++){
+          if(JSON.stringify(req.user.following[i])===JSON.stringify(foundUsers[j]._id))
+          them.push(foundUsers[j]);
+        }
+      }
+        res.render("secrets", {usersWithSecrets: them, theuser: req.user});
+
       }
     }
   });
+}   else {
+    res.redirect("/login");
+  }
+
 });
 //img
 
@@ -195,7 +211,7 @@ app.post("/lookfor", function(req, res){
       User.find(
     { $and: [ { $or:[{ "secret.title": { "$regex": requestedPostId, "$options": "i" }}, {"secret.tags": requestedPostId} ]}]},
     function(err, posts) {
-      console.log(posts+ "ca$$");
+      // console.log(posts+ "ca$$");
       res.render("post", {
       posts: posts,
       searched:requestedPostId
@@ -268,7 +284,7 @@ app.post("/submit",upload.array('blogImg',3), function(req, res){
       if (foundUser) {
 
         var friend = { title: submittedTitle, content: submittedContent, blogImg: submittedImg, blogImg2: submittedImg2, blogImg3: submittedImg3, tags: tags};
-        console.log(friend);
+        // console.log(friend);
 
         foundUser.secret.push(friend);
         foundUser.save(function(){
@@ -287,14 +303,9 @@ User.findById(req.body.theuser, function(err, foundUser){
     console.log(err);
   } else {
     if (foundUser) {
-        //
-        console.log(foundUser.secret + "before" );
+
           foundUser.secret.pull({ _id: req.body.theid });
-          console.log(foundUser.secret + "after" );
-      // var friend = { title: submittedTitle, content: submittedContent, blogImg: submittedImg, blogImg2: submittedImg2, blogImg3: submittedImg3, tags: tags};
-      // console.log(friend);
-      //
-      // foundUser.secret.push(friend);
+
       foundUser.save(function(){
         res.redirect("/me");
       });
@@ -307,7 +318,9 @@ User.findById(req.body.theuser, function(err, foundUser){
 app.post("/myprofile",upload.single('profilepic'), function(req, res){
   const displayname = req.body.displayname;
   const about = req.body.about;
-  const profilepic = req.file.filename;
+  var profilepic ;
+  if(profilepic !=undefined)
+  profilepic = req.file.filename;
 
   User.findById(req.user.id, function(err, foundUser){
     if (err) {
@@ -332,7 +345,7 @@ app.get("/logout", function(req, res){
 });
 
 app.post("/register", function(req, res){
-console.log(req.body);
+// console.log(req.body);
   User.register({username: req.body.username}, req.body.password, function(err, user){
     if (err) {
       console.log(err);
@@ -365,8 +378,120 @@ app.post("/login", function(req, res){
 
 });
 
+app.post("/favourited", function(req, res){
+  if (req.isAuthenticated()){
+  User.findById(req.user.id, function(err, foundUser){
+    if (err) {
+      console.log(err);
+    } else {
+      if (foundUser) {
+        foundUser.favourited.push(req.body.theid);
+        foundUser.save(function(){
+        });
+      }
+    }
+  });
+
+  // User.find({'secret._id': req.body.theid},  function(err, foundUser){
+  //   for(var i =0; i< 5;i++){
+  //     console.log(i + " == yo nos");
+  //   }
+  //   console.log( foundUser.lean().favourited +".secret");
+  //   // foundUser.secret.push({ favourites: req.user.theuser});
+  // });
+  User.findById(req.body.theuser, function(err, foundUser){
+    if (err) {
+      console.log(err);
+    } else {
+      if (foundUser) {
+
+            // foundUser.secret.push({ _id: req.body.theid });
+// foundUser.findById(req.body.theid, function(err, foundUserf){
+//   console.log(foundUserf + " =foundUserf");
+// });
+for(var i =0; i< foundUser.secret.length;i++){
+  var hereid=JSON.stringify(foundUser.secret[i]._id);
+  if(hereid===JSON.stringify(req.body.theid))
+  foundUser.secret[i].favourites.push(req.body.theid);
+    // console.log(foundUser.secret[0].favourites + " == yo nos");
+  }
+
+        foundUser.save(function(){
+          res.redirect("/secrets");
+        });
+      }
+    }
+  });
+
+} else {
+  res.redirect("/login");
+}
+
+});
+
+app.post("/unfavourited", function(req, res){
+  if (req.isAuthenticated()){
+  User.findById(req.user.id, function(err, foundUser){
+    if (err) {
+      console.log(err);
+    } else {
+      if (foundUser) {
+        foundUser.favourited.pull({ _id: req.body.theid });
+        foundUser.save(function(){
+        });
+      }
+    }
+  });
+
+  User.findById(req.body.theuser, function(err, foundUser){
+    if (err) {
+      console.log(err);
+    } else {
+      if (foundUser) {
+
+            // foundUser.secret.push({ _id: req.body.theid });
+// foundUser.findById(req.body.theid, function(err, foundUserf){
+//   console.log(foundUserf + " =foundUserf");
+// });
+for(var i =0; i< foundUser.secret.length;i++){
+  var hereid=JSON.stringify(foundUser.secret[i]._id);
+  if(hereid===JSON.stringify(req.body.theid))
+    foundUser.secret[i].favourites.pull({ _id: req.body.theid });
+    // console.log(foundUser.secret[0].favourites + " == yo nos");
+  }
+
+        foundUser.save(function(){
+          res.redirect("/secrets");
+        });
+      }
+    }
+  });
+
+} else {
+  res.redirect("/login");
+}
+
+});
+
+app.post("/me", function(req, res){
 
 
+User.findById(req.body.theuser, function(err, foundUser){
+  if (err) {
+    console.log(err);
+  } else {
+    if (foundUser) {
+
+          foundUser.secret.pull({ _id: req.body.theid });
+
+      foundUser.save(function(){
+        res.redirect("/me");
+      });
+    }
+  }
+});
+
+});
 
 
 
@@ -376,11 +501,13 @@ app.post("/login", function(req, res){
 app.get("/eachpost/:postId", function(req, res){
 
 const requestedPostId = req.params.postId;
+// console.log(req.params);
 
   User.findOne({ "secret._id": requestedPostId}, function(err, posts){
-    console.log(posts+"==posts");
-    res.render("eachpost", { posts:posts, theid:requestedPostId
-    });
+    if (err) {
+      console.log(err);
+    res.render("eachpost");}else{ console.log(posts + " from each post");
+    res.render("eachpost", { posts:posts, theid:requestedPostId});}
   });
 
 
@@ -400,6 +527,105 @@ const requestedPostId = req.params.postId;
     //   posts: posts
     //   });
     // });
+
+});
+
+app.get("/eachuser/:userId", function(req, res){
+
+const requesteduserId = req.params.userId;
+// console.log(req.params);
+User.findById(requesteduserId, function(err, foundUser){
+  if (err) {
+    console.log(err);
+  } else {
+    if (foundUser) {
+      foundUser.save(function(){
+          res.render("eachuser", { theuser: foundUser, following: req.user.following});});
+      }
+  }
+});
+
+
+
+
+
+    // Post.findOne({title: requestedPostId}, function(err, post){
+    //   console.log(post);
+    //   res.render("post", {
+    //     title: post.title,
+    //     content: post.content
+    //   });
+    // });
+
+    // Post.find({title: requestedPostId}, function(err, posts){
+    //
+    //   res.render("post", {
+    //   posts: posts
+    //   });
+    // });
+
+});
+
+app.post("/eachuser", function(req, res){
+  User.findById(req.user.id, function(err, foundUser){
+    if (err) {
+      console.log(err);
+    } else {
+      if (foundUser) {
+        foundUser.following.push(req.body.userid);
+        foundUser.save(function(){
+        });
+      }
+    }
+  });
+
+  User.findById(req.body.userid, function(err, foundUser){
+    if (err) {
+      console.log(err);
+    } else {
+      if (foundUser) {
+
+    foundUser.followers.push(req.user.id);
+
+        foundUser.save(function(){
+          var red = "/eachuser/" + req.body.userid;
+          res.redirect(red);
+        });
+      }
+    }
+  });
+
+
+});
+app.post("/unfollow", function(req, res){
+  User.findById(req.user.id, function(err, foundUser){
+    if (err) {
+      console.log(err);
+    } else {
+      if (foundUser) {
+        foundUser.following.pull({ _id: req.body.userid});
+        foundUser.save(function(){
+        });
+      }
+    }
+  });
+
+  User.findById(req.body.userid, function(err, foundUser){
+    if (err) {
+      console.log(err);
+    } else {
+      if (foundUser) {
+
+    foundUser.followers.pull({ _id: req.user.id });
+
+        foundUser.save(function(){
+          var red = "/eachuser/" + req.body.userid;
+          res.redirect(red);
+        });
+      }
+    }
+  });
+
 
 });
 

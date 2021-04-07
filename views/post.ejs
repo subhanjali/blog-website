@@ -5,7 +5,7 @@
   <%  posts.forEach(function(post){ %>
 
 <%  for(var i=0;i<post.secret.length;i++){ console.log(post.secret[i].tags[i] + "=post.secret" + "   serached is " + searched); %>
-  <% if(post.secret[i].title.includes(searched)){%> no++;
+  <% if(post.secret[i].title.includes(searched)){no++;%>
     <h1 style="color:white;"><%=post.secret[i].title%></h1>
     <p style="color:white;">
     <%=post.secret[i].content.substring(1, 150)+ " ..."%>
@@ -23,12 +23,15 @@
       <% var nope=0;%>
       <%  posts.forEach(function(post){ %>
 
-    <%  for(var i=0;i<post.secret.length;i++){ console.log(post.secret[i].tags[i] + "=post.secret" + "   serached is " + searched); %>
+    <%  for(var i=0;i<post.secret.length;i++){  %>
       <%for(var j=0;j<post.secret[i].tags.length;j++) if(post.secret[i].tags[j].includes(searched)){nope++;%>
         <h1 style="color:white;"><%=post.secret[i].title%></h1>
         <p style="color:white;">
         <%=post.secret[i].content.substring(1, 150)+ " ..."%>
-        <a href="/eachpost/<%=post.secret[i]._id%>">Read More</a><br>
+
+  <a href="/eachpost/<%=post.secret[i]._id%>">Read More</a><br>
+
+
         <% for(var l=0;l<post.secret[i].tags.length;l++){%>
         <span style="color:white; background:darkblue;"><%=  post.secret[i].tags[l]%></span>
           <% } %>
@@ -36,7 +39,7 @@
     <%}%>
         <% }}) %>
         <%if(nope===0){ %>
-        <h3 style="color:white;">Sorry! No blogs with the searched tag either!</h3>
+        <h3 style="color:white;">Sorry! No blogs with the searched tag!</h3>
           <%} %>
 
 <%- include("partials/footer"); -%>

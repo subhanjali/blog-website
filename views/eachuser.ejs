@@ -1,0 +1,72 @@
+<%- include('partials/header') %>
+<link rel="stylesheet" href="/css/styles.css">
+
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12 col-md-12">
+    <h4><%=theuser.displayname%></h4> <h5><%=theuser.about%></h5>
+        <img class="rounded-circle img-fluid" src="/upload/<%=theuser.profilepic%>" alt="Avatar" style="width:200px; height:200px;   border-radius: 50%; object-fit: cover;">
+        <%var vis=0;%>
+        <% for(var z=0;z<following.length;z++){%>
+        <%if(JSON.stringify(following[z])===JSON.stringify(theuser._id)){vis++;%>
+
+          <form action="/unfollow" method="POST">
+            <input type="hidden" type="text" name="userid" value="<%=theuser._id%>">
+            <button class="btn btn-light btn-lg" type="submit" style="font-size:16px">+ Unfollow</button>
+          </form>
+          <%}}if(vis===0){ console.log(following);%>
+
+        <form action="/eachuser" method="POST">
+          <input type="hidden" type="text" name="userid" value="<%=theuser._id%>">
+          <button class="btn btn-light btn-lg" type="submit" style="font-size:16px">+ Follow</button>
+        </form>
+        <%}%>
+
+
+
+<%for(var i=0;i<theuser.secret.length;i++){%>
+<h3 class="secret-text" ><%= theuser.secret[i].title%></h3><br>
+<p style="color:green;"><%=  theuser.secret[i].content%></p>
+<% if(theuser.secret[i].blogImg!=undefined){ var str=theuser.secret[i].blogImg;%>
+    <% var ext = str.substring(str.lastIndexOf("."),str.length+1);%>
+    <% if(ext=== ".MP4" || ext=== ".MOV" || ext=== ".WMV" || ext=== ".WEBM" || ext=== ".mp4"){%>
+  <video  style=" width:50%;" autoplay poster="posterimage.jpg" controls>
+    <source src="/upload/<%= theuser.secret[i].blogImg%>" type="video/mp4">
+  </video>
+    <% } else{%>
+        <img style=" width:50%;" alt="here is it <%=theuser.secret[i].blogImg%>" src="/upload/<%= theuser.secret[i].blogImg%>">
+        <% } %>
+
+<% } %>
+<% if(theuser.secret[i].blogImg2!=undefined){var str=theuser.secret[i].blogImg2;%>
+    <% var ext = str.substring(str.lastIndexOf("."),str.length+1);%>
+    <% if(ext=== ".MP4" || ext=== ".MOV" || ext=== ".WMV" || ext=== ".WEBM" || ext=== ".mp4"){%>
+  <video  style=" width:50%;" autoplay poster="posterimage.jpg" controls>
+    <source src="/upload/<%= theuser.secret[i].blogImg2%>" type="video/mp4">
+  </video>
+    <% } else{%>
+<img style=" width:50%;" alt="here is it <%=theuser.secret[i].blogImg%>" src="/upload/<%= theuser.secret[i].blogImg2%>">
+  <% } %>
+<% } %>
+<% if(theuser.secret[i].blogImg3!=undefined){var str=theuser.secret[i].blogImg3;%>
+  <% var ext = str.substring(str.lastIndexOf("."),str.length+1);%>
+  <% if(ext=== ".MP4" || ext=== ".MOV" || ext=== ".WMV" || ext=== ".WEBM" || ext=== ".mp4"){%>
+<video  style=" width:50%;" autoplay poster="posterimage.jpg" controls>
+  <source src="/upload/<%= theuser.secret[i].blogImg3%>" type="video/mp4">
+</video>
+  <% } else{%>
+<img style=" width:50%;" alt="here is it <%=theuser.secret[i].blogImg%>" src="/upload/<%= theuser.secret[i].blogImg3%>">
+<% } %>
+<% } %>
+<br>
+<% for(var j=0;j<theuser.secret[i].tags.length;j++){%>
+<span style="color:white; background:darkblue;"><%=  theuser.secret[i].tags[j]%></span>
+  <% } %>
+
+
+  <%}%>
+
+</div></div>
+</div>
+
+<%- include('partials/footer') %>

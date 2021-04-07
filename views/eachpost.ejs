@@ -1,24 +1,24 @@
-<%- include("partials/header") -%>
+<%- include('partials/header') %>
+<link rel="stylesheet" href="/css/styles.css">
 
 
 
-
-<%for(var i=0;i<posts.secret.length;i++){console.log(posts.secret + "there it is");%>
+<%for(var i=0;i<posts.secret.length;i++){%>
   <% if(JSON.stringify(posts.secret[i]._id)===JSON.stringify(theid)){%>
     <h3><%=posts.secret[i].title%></h3>
     <p><%=posts.secret[i].content%></p>
     <% if(posts.secret[i].blogImg!=undefined){%>
-        <img style=" width:20%;" alt="here is it <%=posts.secret[i].blogImg%>" src="upload/<%=posts.secret[i].blogImg%>">
+        <img style=" width:20%;" alt="here is it <%=posts.secret[i].blogImg%>" src="/upload/<%=posts.secret[i].blogImg%>">
 <% } %>
     <% if(posts.secret[i].blogImg2!=undefined){%>
-    <img style=" width:20%;" alt="here is it <%=posts.secret[i].blogImg%>" src="upload/<%=posts.secret[i].blogImg2%>">
+    <img style=" width:20%;" alt="here is it <%=posts.secret[i].blogImg%>" src="/upload/<%=posts.secret[i].blogImg2%>">
     <% console.log(posts.secret[i].blogImg + "thisssssss");} %>
     <% if(posts.secret[i].blogImg3!=undefined){%>
-    <img style=" width:20%;" alt="here is it <%=posts.secret[i].blogImg%>" src="upload/<%=posts.secret[i].blogImg3%>">
+    <img style=" width:20%;" alt="here is it <%=posts.secret[i].blogImg%>" src="/upload/<%=posts.secret[i].blogImg3%>">
     <% } %>
 <%}%>
   <%}%>
 
 
 
-<%- include("partials/footer") -%>
+<%- include('partials/footer') %>

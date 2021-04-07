@@ -1,132 +1,146 @@
 <%- include('partials/header') %>
 
-<style >
+<style>
   * {
-  margin: 0;
-  padding: 0;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-}
+    margin: 0;
+    padding: 0;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  }
 
-body {
-  background-color: #f3f3f2;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-}
+  body {
+    background-color: #f3f3f2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+  }
 
-.main-container {
-  background-color: #fff;
-  width: 700px;
-  max-width: 100%;
-  padding: 2rem;
-  border-radius: 5px;
-  box-shadow: 3px 5px 2px rgba(212, 208, 208, 0.2);
-}
-.profile-content {
-  display: flex;
-  width: 100%;
-  margin: 10px 25px;
-  justify-content: space-between;
-  align-items: center;
-}
-.body-content {
-  margin: 10px 25px;
-}
-.profile-img {
-  display: flex;
-  align-items: center;
-}
+  .main-container {
+    background-color: #fff;
+    width: 700px;
+    max-width: 100%;
+    padding: 2rem;
+    border-radius: 5px;
+    box-shadow: 3px 5px 2px rgba(212, 208, 208, 0.2);
+  }
+
+  .profile-content {
+    display: flex;
+    width: 100%;
+    margin: 10px 25px;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .body-content {
+    margin: 10px 25px;
+  }
+
+  .profile-img {
+    display: flex;
+    align-items: center;
+  }
 
 
-.profile-img img {
-  width: 70px;
-  border: none;
-  border-radius: 50%;
-  height: 70px;
-  margin-right: 10px;
-}
-span {
-  color: gray;
-  margin-right: 8px;
-}
-span:hover {
-  color: blue;
-  cursor: pointer;
-}
-.break {
-  width: 85%;
-  margin: 20px 7.4% 0;
-  opacity: 0.5;
-}
+  .profile-img img {
+    width: 70px;
+    border: none;
+    border-radius: 50%;
+    height: 70px;
+    margin-right: 10px;
+  }
 
-ul {
-  display: flex;
-  justify-content: start;
-}
-ul > li {
-  list-style: none;
-  margin: 10px;
-  color: bisque;
-}
-li a {
-  text-decoration: none;
-  color: darkgray;
-  font-size: 14px;
-}
+  span {
+    color: gray;
+    margin-right: 8px;
+  }
 
-ul > li .active {
-  color: black;
-  font-size: 16px;
-  font-weight: bold;
-}
-a:hover {
-  color: blue;
-  text-decoration: wavy;
-  border-bottom: 1px turquoise solid;
-}
+  span:hover {
+    color: blue;
+    cursor: pointer;
+  }
 
-/* card */
-.main {
-  display: grid;
-  /* flex-direction: row; */
-  grid-template-columns: repeat(3, 1fr);
-  margin-top: 20px;
-  gap: 20px;
-  align-items: baseline;
-  justify-content: space-between;
-}
-.card {
-  background-color: #fff;
-  border: 1px solid whitesmoke;
-  padding: 2rem;
-  border-radius: 10px;
-  cursor: pointer;
-}
-.card:hover {
-  background-color: black;
-  color: #fff;
-  border: none;
-  box-shadow: 1px 2px 3px rgba(212, 208, 208, 0.2);
-}
-.card p {
-  margin: 0;
-}
-.card .num {
-  font-size: 1.5rem;
-}
-.main .bg-dark {
-  background-color: black;
-  color: #fff;
-  border: none;
-  box-shadow: 1px 2px 3px rgba(212, 208, 208, 0.2);
-}
+  .break {
+    width: 85%;
+    margin: 20px 7.4% 0;
+    opacity: 0.5;
+  }
+
+  ul {
+    display: flex;
+    justify-content: start;
+  }
+
+  ul>li {
+    list-style: none;
+    margin: 10px;
+    color: bisque;
+  }
+
+  li a {
+    text-decoration: none;
+    color: darkgray;
+    font-size: 14px;
+  }
+
+  ul>li .active {
+    color: black;
+    font-size: 16px;
+    font-weight: bold;
+  }
+
+  a:hover {
+    color: blue;
+    text-decoration: wavy;
+    border-bottom: 1px turquoise solid;
+  }
+
+  /* card */
+  .main {
+    display: grid;
+    /* flex-direction: row; */
+    grid-template-columns: repeat(3, 1fr);
+    margin-top: 20px;
+    gap: 20px;
+    align-items: baseline;
+    justify-content: space-between;
+  }
+
+  .card {
+    background-color: #fff;
+    border: 1px solid whitesmoke;
+    padding: 2rem;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+
+  .card:hover {
+    background-color: black;
+    color: #fff;
+    border: none;
+    box-shadow: 1px 2px 3px rgba(212, 208, 208, 0.2);
+  }
+
+  .card p {
+    margin: 0;
+  }
+
+  .card .num {
+    font-size: 1.5rem;
+  }
+
+  .main .bg-dark {
+    background-color: black;
+    color: #fff;
+    border: none;
+    box-shadow: 1px 2px 3px rgba(212, 208, 208, 0.2);
+  }
 </style> <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 <div class="main-container">
   <div class="profile-content">
     <div class="profile-img">
-      <img src="" alt="NO profile image"/>
+      <img src="" alt="NO profile image" />
       <div class="name">
         <h2>Name</h2>
         <span>@user_homie hey bro what in the world , wow damn thats some weird shit how coll is that </span>
@@ -134,7 +148,7 @@ a:hover {
     </div>
     <button class="edit">
 
-    <a class="btn btn-light btn-lg" href="/myprofile" role="button"> <i class="fas fa-edit"></i>Edit</a>
+      <a class="btn btn-light btn-lg" href="/myprofile" role="button"> <i class="fas fa-edit"></i>Edit</a>
     </button>
   </div>
   <!-- break -->
@@ -165,52 +179,52 @@ a:hover {
     <% usersWithSecrets.secret.forEach((user, i) => {%>
 
 
-  <h3 class="" style="color:black;"><%= user.title%></h3><br>
-  <p ><%=  user.content%></p>
-  <% if(user.blogImg!=undefined){var str=user.blogImg;%>
+    <h3 class="" style="color:black;"><%= user.title%></h3><br>
+    <p><%=  user.content%></p>
+    <% if(user.blogImg!=undefined){var str=user.blogImg;%>
     <% var ext = str.substring(str.lastIndexOf("."),str.length+1);%>
     <% if(ext=== ".MP4" || ext=== ".MOV" || ext=== ".WMV" || ext=== ".WEBM"){%>
-  <video  style=" width:50%;" autoplay poster="posterimage.jpg" controls>
-    <source src="upload/<%= user.blogImg%>" type="video/mp4">
-  </video>
+    <video style=" width:50%;" autoplay poster="posterimage.jpg" controls>
+      <source src="upload/<%= user.blogImg%>" type="video/mp4">
+    </video>
     <% } else{%>
     <img style=" width:20%;" alt="here is it <%=user.blogImg%>" src="upload/<%= user.blogImg%>">
-  <% } %>
+    <% } %>
 
-  <% } %>
+    <% } %>
 
-  <% if(user.blogImg2!=undefined){var str=user.blogImg2;%>
+    <% if(user.blogImg2!=undefined){var str=user.blogImg2;%>
     <% var ext = str.substring(str.lastIndexOf("."),str.length+1);%>
     <% if(ext=== ".MP4" || ext=== ".MOV" || ext=== ".WMV" || ext=== ".WEBM"){%>
-  <video  style=" width:50%;" autoplay poster="posterimage.jpg" controls>
-    <source src="upload/<%= user.blogImg2%>" type="video/mp4">
-  </video>
+    <video style=" width:50%;" autoplay poster="posterimage.jpg" controls>
+      <source src="upload/<%= user.blogImg2%>" type="video/mp4">
+    </video>
     <% } else{%>
-      <img style=" width:50%;" alt="here is it <%=user.blogImg%>" src="upload/<%= user.blogImg2%>">
-  <% } %>
-  <% } %>
-  <% if(user.blogImg3!=undefined){var str=user.blogImg3;%>
+    <img style=" width:50%;" alt="here is it <%=user.blogImg%>" src="upload/<%= user.blogImg2%>">
+    <% } %>
+    <% } %>
+    <% if(user.blogImg3!=undefined){var str=user.blogImg3;%>
     <% var ext = str.substring(str.lastIndexOf("."),str.length+1);%>
     <% if(ext=== ".MP4" || ext=== ".MOV" || ext=== ".WMV" || ext=== ".WEBM"){%>
-  <video  style=" width:50%;" autoplay poster="posterimage.jpg" controls>
-    <source src="upload/<%= user.blogImg2%>" type="video/mp4">
-  </video>
+    <video style=" width:50%;" autoplay poster="posterimage.jpg" controls>
+      <source src="upload/<%= user.blogImg2%>" type="video/mp4">
+    </video>
     <% } else{%>
-      <img style=" width:50%;" alt="here is it <%=user.blogImg%>" src="upload/<%= user.blogImg3%>">
-  <% } %>
-  <% } %>
-  <br>
-  <% for(var j=0;j<user.tags.length;j++){%>
-  <span style="color:white; background:darkblue;"><%=  user.tags[j]%></span>
-    <% } %><form action="/me" method="POST" >
-      <input type="hidden" type="text" name="theuser" value="<%=  theuser%>" >
-      <input type="hidden" type="text" name="theid" value="<%=  user._id%>" >
+    <img style=" width:50%;" alt="here is it <%=user.blogImg%>" src="upload/<%= user.blogImg3%>">
+    <% } %>
+    <% } %>
+    <br>
+    <% for(var j=0;j<user.tags.length;j++){%>
+    <span style="color:white; background:darkblue;"><%=  user.tags[j]%></span>
+    <% } %><form action="/me" method="POST">
+      <input type="hidden" type="text" name="theuser" value="<%=  theuser%>">
+      <input type="hidden" type="text" name="theid" value="<%=  user._id%>">
 
-    <button type="submit" style="font-size:24px"><i class="fa fa-trash-o"></i></button>
+      <button type="submit" style="font-size:24px"><i class="fa fa-trash-o"></i></button>
     </form>
 
-  <%}) %>
-  <%  %>
+    <%}) %>
+    <%  %>
 
 
     <hr>
