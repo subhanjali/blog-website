@@ -1,32 +1,101 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
-
+<html>
 <head>
-  <meta charset="utf-8">
-  <title>Daily Blog</title>
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <link rel="stylesheet" href="css/bootstrap-social.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Daily Blog</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+	<link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
-  <nav class="navbar navbar-default">
-    <div class="container">
-      <div class="navbar-header">
-        <p class="navbar-brand">DAILY BLOG</p>
-      </div>
-        <ul class="nav navbar-nav navbar-right">
-          <li id="home"><a href="/secrets">Blogs</a></li>
-          <li id="about"><a href="/me">Me</a></li>
-          <li id="contact"><a href="/contact">CONTACT US</a></li>
-          <li >
-            <form class="form-inline my-2 my-lg-0" action="/lookfor" method="post">
-      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="lookfor">
-      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-    </form></li>
-        </ul>
-    </div>
-  </nav>
-</head>
 
-<body>
+  <body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand" href="#">DAILY BLOG</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li id="home" class="nav-item active">
+        <a class="nav-link" href="/secrets">Blogs</a>
+      </li>
+      <li id="about" class="nav-item">
+        <a class="nav-link" href="/me">Me</a>
+      </li>
+      <li id="contact" class="nav-item">
+        <a class="nav-link" href="/contact">CONTACT US</a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Dropdown
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="#">Action</a>
+          <a class="dropdown-item" href="#">Another action</a>
+          <a class="dropdown-item" href="#">Something else here</a>
+        </div>
+      </li>
+    </ul>
+    <form class="form-inline my-2 my-lg-0 col-md-4" action="/lookfor" method="post">
+    	<div style="position: relative;">
+      		<input class="custom_search form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="lookfor">
+      		<span class="search_span"></span>
+  		</div>
+      <button class="ml-lg-3 btn btn-success my-2 my-sm-0 search_button tx--white" type="submit" ripple="ripple">Search</button>
+    </form>
+  </div>
+</nav>
+
+
+
+</head>
+<script type="text/javascript">
+(function() { var cleanUp, debounce, i, len, ripple, rippleContainer, ripples, showRipple;
+
+debounce = function(func, delay) {
+var inDebounce;
+inDebounce = undefined;
+return function() {
+var args, context;
+context = this;
+args = arguments;
+clearTimeout(inDebounce);
+return inDebounce = setTimeout(function() {
+  return func.apply(context, args);
+}, delay);
+};
+};
+
+showRipple = function(e) {
+var pos, ripple, rippler, size, style, x, y;
+ripple = this;
+rippler = document.createElement('span');
+size = ripple.offsetWidth;
+pos = ripple.getBoundingClientRect();
+x = e.pageX - pos.left - (size / 2);
+y = e.pageY - pos.top - (size / 2);
+style = 'top:' + y + 'px; left: ' + x + 'px; height: ' + size + 'px; width: ' + size + 'px;';
+ripple.rippleContainer.appendChild(rippler);
+return rippler.setAttribute('style', style);
+};
+
+cleanUp = function() {
+while (this.rippleContainer.firstChild) {
+this.rippleContainer.removeChild(this.rippleContainer.firstChild);
+}
+};
+
+ripples = document.querySelectorAll('[ripple]');
+
+for (i = 0, len = ripples.length; i < len; i++) {
+ripple = ripples[i];
+rippleContainer = document.createElement('div');
+rippleContainer.className = 'ripple--container';
+ripple.addEventListener('mousedown', showRipple);
+ripple.addEventListener('mouseup', debounce(cleanUp, 2000));
+ripple.rippleContainer = rippleContainer;
+ripple.appendChild(rippleContainer);
+}
+}());
+</script>

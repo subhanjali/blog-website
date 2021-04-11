@@ -3,27 +3,108 @@
 <html lang="en" dir="ltr">
 
 <head>
+  <style >
+  @import url('https://fonts.googleapis.com/css?family=Kodchasan');
+  @import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@1,100&display=swap');
+  html, body, section{
+  	height: 100%;
+  }
+  body{
+  	color:#fff;
+  	text-align:center;
+    background-size: cover;
+    background-image: linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0)), url(https://images.unsplash.com/photo-1506606401543-2e73709cebb4?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80);
+
+  }
+  .container{
+  	display:flex;
+  }
+  div{
+  	display:flex;
+  	flex-direction:column;
+  	justify-content:center;
+  }
+  .left{
+    font-family: 'Lato', sans-serif;
+  	background: linear-gradient(rgba(0,0,0,0.85), rgba(255,255,255,0.10)), url();
+  	background-size:cover;
+  	background-position:center;
+  	flex:1;
+  	padding:1rem;
+  	transition: all .2s ease-in-out;
+
+  }
+  .right{
+    font-family: 'Lato', sans-serif;
+  	background: linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0)), url();
+  	background-size:cover;
+  	background-position:center;
+  	flex:1;
+  	padding:1rem;
+  	transition: all .2s ease-in-out;
+  }
+  .left:hover, .right:hover{
+  	transform: scale(0.95);
+  }
+
+  .left h1{
+  	/* font-family: 'Kodchasan', sans-serif; */
+  	font-size:4em;
+  }
+  .right h1{
+  	/* font-family: 'Kodchasan', sans-serif; */
+  	font-size:4em;
+  }
+  .button{
+  	border-radius:30px;
+  	color:#fff;
+  	text-decoration:none;
+  	background-color:blue;
+  	padding:15px 25px;
+  	margin:0 2%;
+  	text-align:center;
+  	font-weight:bold;
+  	display:inline-block;
+  	font-size:1.5em;
+  	cursor:pointer;
+  	transition:all 0.3s;
+  	width: 150px;
+
+  }
+  .button:hover{
+  	background: darkblue;
+  	color:#fff;
+  }
+
+  </style>
   <meta charset="utf-8">
   <title>Daily Blog</title>
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <!-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous"> -->
+  <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous"> -->
+  <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> -->
   <link rel="stylesheet" href="css/bootstrap-social.css">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@1,300&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="css/styles.css">
+<body style="background-color:white;">
+  <section class="container">
+  	<div class="left">
+  		<article>
+  			<h1>Daily Blog</h1>
+        <a>Share your thoughts with the world. Read theirs.</a>
 
-    <div class="container">
+  		</article>
+
+  	</div>
+  	<div class="right">
+  		<article>
+  			<h1>Welcome</h1>
+        <a class="btn btn-light btn-lg button" href="/register" role="button">Register</a>
+        <a class="btn btn-dark btn-lg button" href="/login" role="button">Login</a>
+  		</article>
+  	</div>
+  </section>
 
 
-<div class="jumbotron centered">
-  <div class="container">
-
-    <h1 class="display-3" style="color:blue;">Daily Blog</h1>
-    <p class="lead" style="color:green;">Share your thoughts with the world. Read theirs.</p>
-    <hr>
-    <a class="btn btn-light btn-lg" href="/register" role="button">Register</a>
-    <a class="btn btn-dark btn-lg" href="/login" role="button">Login</a>
-
-  </div>
-</div>
-
-<%- include('partials/footer') %>
+    </body>
