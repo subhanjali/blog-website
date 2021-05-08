@@ -286,7 +286,8 @@ app.post("/submit",upload.array('blogImg',3), function(req, res){
         var friend = { title: submittedTitle, content: submittedContent, blogImg: submittedImg, blogImg2: submittedImg2, blogImg3: submittedImg3, tags: tags};
         // console.log(friend);
         if(foundUser.secret.length===0)
-        foundUser.following.push(req.user.id);
+        {foundUser.following.push(req.user.id);
+        foundUser.profilepic="nopic.png";}
         foundUser.secret.push(friend);
 
         foundUser.save(function(){
