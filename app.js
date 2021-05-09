@@ -287,7 +287,9 @@ app.post("/submit",upload.array('blogImg',3), function(req, res){
         // console.log(friend);
         if(foundUser.secret.length===0)
         {foundUser.following.push(req.user.id);
-        foundUser.profilepic="nopic.png";}
+        foundUser.profilepic="nopic.png";
+        foundUser.about="Hi reader!";}
+
         foundUser.secret.push(friend);
 
         foundUser.save(function(){
@@ -348,7 +350,6 @@ app.get("/logout", function(req, res){
 });
 
 app.post("/register", function(req, res){
-// console.log(req.body);
   User.register({username: req.body.username}, req.body.password, function(err, user){
     if (err) {
       console.log(err);
@@ -509,7 +510,7 @@ const requestedPostId = req.params.postId;
   User.findOne({ "secret._id": requestedPostId}, function(err, posts){
     if (err) {
       console.log(err);
-    res.render("eachpost");}else{ console.log(posts + " from each post");
+    res.render("eachpost");}else{
     res.render("eachpost", { posts:posts, theid:requestedPostId});}
   });
 

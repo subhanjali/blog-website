@@ -34,7 +34,7 @@
         <h2>Search results by tags</h2>
         <h4 style=""><%=post.secret[i].title%></h4>
         <p style="">
-        <%=post.secret[i].content.substring(1, 150)+ " ..."%>
+        <%=post.secret[i].content.substring(0, 150)+ " ..."%>
 
   <a href="/eachpost/<%=post.secret[i]._id%>">Read More</a><br>
 

@@ -1,10 +1,134 @@
 <%- include('partials/header') %>
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
  <!-- <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br> -->
+ <style media="screen">
+   * { padding:0;margin:0;}
+
+   body { position:relative;width:100%;}
+
+   .parallax-container {
+     position:relative;
+     overflow:hidden;
+     height: 350px;
+   }
+   table {
+   border-collapse: collapse;
+   width: 100%;
+ }
+
+ th, td {
+   text-align: centre;
+   padding: 8px;
+ }
+
+ td {
+   text-align: centre;
+   padding: 8px;
+ }
+   .parallax {
+     position:absolute;
+     top:0;
+     height:120%;
+     width:100%;
+
+     background-image:url(https://i.pinimg.com/originals/de/06/e1/de06e1b1e4a49f033f52d1ae0a2d49ad.png);
+     background-color:#8e24aa;
+     background-size:cover;
+   }
+
+   h1,h3,p,h2,blockquote,li { font-family:'Merriweather', sans-serif;font-weight:300;}
+
+   .containereu {
+     width:80%;
+
+     position:relative;
+     top:-250px;
+
+     background-color:#fff;
+     margin:0 auto;
+
+     padding:50px;
+     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1), 0 16px 48px rgba(0, 0, 0, 0.2);
+   }
+
+   h1 { font-size:50px;margin-bottom:10px;}
+   h3 { font-size:18px;margin-bottom:20px;}
+   h2 { font-size:34px;margin-bottom:10px;}
+   p,blockquote { font-size:19px;}
+   li { font-size:19px;}
+
+   p,ul { margin-bottom:20px;}
+   blockquote { margin-left:35px;}
+   a {
+     color: black;
+   }
+   a:hover {
+     text-decoration: none;
+     color: #8e24aa;
+     font-size:2.5rem;
+   }
+   * { padding:0;margin:0;}
+
+   body { position:relative;width:100%;}
+
+   .parallax-container {
+     position:relative;
+     overflow:hidden;
+     height: 350px;
+   }
+
+   .parallax {
+     position:absolute;
+     top:0;
+     height:120%;
+     width:100%;
+
+     background-image:url(https://i.pinimg.com/originals/de/06/e1/de06e1b1e4a49f033f52d1ae0a2d49ad.png);
+     background-color:#8e24aa;
+     background-size:cover;
+   }
+
+   h1,h3,p,h2,blockquote,li { font-family:'Merriweather', sans-serif;font-weight:300;}
+
+   .containereu {
+     width:80%;
+
+     position:relative;
+     top:-250px;
+
+     background-color:#fff;
+     margin:0 auto;
+
+     padding:50px;
+     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1), 0 16px 48px rgba(0, 0, 0, 0.2);
+   }
+
+   h1 { font-size:50px;margin-bottom:10px;}
+   h3 { font-size:18px;margin-bottom:20px;}
+   h2 { font-size:34px;margin-bottom:10px;}
+   p,blockquote { font-size:19px;}
+   li { font-size:19px;}
+
+   p,ul { margin-bottom:20px;}
+   blockquote { margin-left:35px;}
+   a {
+     color: black;
+   }
+   a:hover {
+     text-decoration: none;
+     color: #8e24aa;
+     font-size:2.1rem;
+   }
+
+
+ </style>
+ <div class="parallax-container">
+   <div class="parallax" speed="1.5"></div>
+ </div>
 <div class="main-container">
   <div class="profile-content">
     <div class="profile-img">
-      <img src="" alt="NO profile image" />
+      <img alt="NO profile image" src="upload/<%=usersWithSecrets.profilepic%>" style=" width:20%;"/>
       <div class="name">
         <h2><%=usersWithSecrets.displayname%></h2>
         <span><%=usersWithSecrets.about%></span>
@@ -24,21 +148,19 @@
     <div class="main">
       <div class="card bg-dark">
         <p>Followers</p>
-        <p class="num">1212</p>
+        <p class="num"><%= usersWithSecrets.followers.length%></p>
       </div>
       <div class="card">
         <p>Following</p>
-        <p class="num">422</p>
+        <p class="num"><%= usersWithSecrets.following.length%></p>
       </div>
       <div class="card">
         <p>Total blogs</p>
-        <p class="num">11</p>
+        <p class="num"><%= usersWithSecrets.secret.length%></p>
       </div>
     </div>
 
-
-    <i class="fas fa-key fa-6x"></i>
-    <h1 class="display-3">Read these blogs!</h1>
+    <h1 class="display-3">All your blogs</h1>
 
     <% usersWithSecrets.secret.forEach((user, i) => {%>
 
@@ -47,7 +169,7 @@
     <p><%=  user.content%></p>
     <% if(user.blogImg!=undefined){var str=user.blogImg;%>
     <% var ext = str.substring(str.lastIndexOf("."),str.length+1);%>
-    <% if(ext=== ".MP4" || ext=== ".MOV" || ext=== ".WMV" || ext=== ".WEBM"){%>
+    <% if(ext=== ".MP4" || ext=== ".MOV" || ext=== ".WMV" || ext=== ".WEBM" || ext=== ".mp4"){%>
     <video style=" width:50%;" autoplay poster="posterimage.jpg" controls>
       <source src="upload/<%= user.blogImg%>" type="video/mp4">
     </video>
@@ -59,7 +181,7 @@
 
     <% if(user.blogImg2!=undefined){var str=user.blogImg2;%>
     <% var ext = str.substring(str.lastIndexOf("."),str.length+1);%>
-    <% if(ext=== ".MP4" || ext=== ".MOV" || ext=== ".WMV" || ext=== ".WEBM"){%>
+    <% if(ext=== ".MP4" || ext=== ".MOV" || ext=== ".WMV" || ext=== ".WEBM"  || ext=== ".mp4"){%>
     <video style=" width:50%;" autoplay poster="posterimage.jpg" controls>
       <source src="upload/<%= user.blogImg2%>" type="video/mp4">
     </video>
@@ -69,7 +191,7 @@
     <% } %>
     <% if(user.blogImg3!=undefined){var str=user.blogImg3;%>
     <% var ext = str.substring(str.lastIndexOf("."),str.length+1);%>
-    <% if(ext=== ".MP4" || ext=== ".MOV" || ext=== ".WMV" || ext=== ".WEBM"){%>
+    <% if(ext=== ".MP4" || ext=== ".MOV" || ext=== ".WMV" || ext=== ".WEBM" || ext=== ".mp4"){%>
     <video style=" width:50%;" autoplay poster="posterimage.jpg" controls>
       <source src="upload/<%= user.blogImg2%>" type="video/mp4">
     </video>
@@ -83,13 +205,15 @@
     <% } %><form action="/me" method="POST">
       <input type="hidden" type="text" name="theuser" value="<%=  theuser%>">
       <input type="hidden" type="text" name="theid" value="<%=  user._id%>">
-
       <button type="submit" style="font-size:24px"><i class="fa fa-trash-o"></i></button>
     </form>
 
     <%}) %>
     <%  %>
+<!-- bro -->
 
+
+<!-- bro -->
 
     <hr>
     <a class="btn btn-light btn-lg" href="/logout" role="button">Log Out</a>

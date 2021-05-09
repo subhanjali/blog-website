@@ -1,72 +1,230 @@
 <%- include('partials/header') %>
 <link rel="stylesheet" href="/css/styles.css">
+<style media="screen">
+  * { padding:0;margin:0;}
 
-<div class="container">
-  <div class="row">
-    <div class="col-sm-12 col-md-12">
-    <h4><%=theuser.displayname%></h4> <h5><%=theuser.about%></h5>
-        <img class="rounded-circle img-fluid" src="/upload/<%=theuser.profilepic%>" alt="Avatar" style="width:200px; height:200px;   border-radius: 50%; object-fit: cover;">
-        <%var vis=0;%>
-        <% for(var z=0;z<following.length;z++){%>
-        <%if(JSON.stringify(following[z])===JSON.stringify(theuser._id)){vis++;%>
+  body { position:relative;width:100%;}
 
-          <form action="/unfollow" method="POST">
-            <input type="hidden" type="text" name="userid" value="<%=theuser._id%>">
-            <button class="btn btn-light btn-lg" type="submit" style="font-size:16px">+ Unfollow</button>
-          </form>
-          <%}}if(vis===0){ console.log(following);%>
+  .parallax-container {
+    position:relative;
+    overflow:hidden;
+    height: 350px;
+  }
+  table {
+  border-collapse: collapse;
+  width: 100%;
+}
 
-        <form action="/eachuser" method="POST">
-          <input type="hidden" type="text" name="userid" value="<%=theuser._id%>">
-          <button class="btn btn-light btn-lg" type="submit" style="font-size:16px">+ Follow</button>
+th, td {
+  text-align: centre;
+  padding: 8px;
+}
+
+td {
+  text-align: centre;
+  padding: 8px;
+}
+  .parallax {
+    position:absolute;
+    top:0;
+    height:120%;
+    width:100%;
+
+    background-image:url(https://i.pinimg.com/originals/de/06/e1/de06e1b1e4a49f033f52d1ae0a2d49ad.png);
+    background-color:#8e24aa;
+    background-size:cover;
+  }
+
+  h1,h3,p,h2,blockquote,li { font-family:'Merriweather', sans-serif;font-weight:300;}
+
+  .containereu {
+    width:80%;
+
+    position:relative;
+    top:-250px;
+
+    background-color:#fff;
+    margin:0 auto;
+
+    padding:50px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1), 0 16px 48px rgba(0, 0, 0, 0.2);
+  }
+
+  h1 { font-size:50px;margin-bottom:10px;}
+  h3 { font-size:18px;margin-bottom:20px;}
+  h2 { font-size:34px;margin-bottom:10px;}
+  p,blockquote { font-size:19px;}
+  li { font-size:19px;}
+
+  p,ul { margin-bottom:20px;}
+  blockquote { margin-left:35px;}
+  a {
+    color: black;
+  }
+  a:hover {
+    text-decoration: none;
+    color: #8e24aa;
+    font-size:2.5rem;
+  }
+  * { padding:0;margin:0;}
+
+  body { position:relative;width:100%;}
+
+  .parallax-container {
+    position:relative;
+    overflow:hidden;
+    height: 350px;
+  }
+
+  .parallax {
+    position:absolute;
+    top:0;
+    height:120%;
+    width:100%;
+
+    background-image:url(https://i.pinimg.com/originals/de/06/e1/de06e1b1e4a49f033f52d1ae0a2d49ad.png);
+    background-color:#8e24aa;
+    background-size:cover;
+  }
+
+  h1,h3,p,h2,blockquote,li { font-family:'Merriweather', sans-serif;font-weight:300;}
+
+  .containereu {
+    width:80%;
+
+    position:relative;
+    top:-250px;
+
+    background-color:#fff;
+    margin:0 auto;
+
+    padding:50px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1), 0 16px 48px rgba(0, 0, 0, 0.2);
+  }
+
+  h1 { font-size:50px;margin-bottom:10px;}
+  h3 { font-size:18px;margin-bottom:20px;}
+  h2 { font-size:34px;margin-bottom:10px;}
+  p,blockquote { font-size:19px;}
+  li { font-size:19px;}
+
+  p,ul { margin-bottom:20px;}
+  blockquote { margin-left:35px;}
+  a {
+    color: black;
+  }
+  a:hover {
+    text-decoration: none;
+    color: #8e24aa;
+    font-size:2.1rem;
+  }
+
+
+</style>
+<div class="parallax-container">
+  <div class="parallax" speed="1.5"></div>
+</div>
+<div class="containereu">
+  <div class="container">
+<div class="row">
+
+  <div style="" class="col-xs-12 col-sm-6 col-md-2">
+    <div class="">
+      <a href="/eachuser/<%=theuser._id%>"><img style="width:160px; height:160px ; padding:5px;border-style: dashed;   border-radius: 50%; object-fit: cover;" src="/upload/<%= theuser.profilepic%>" alt="">      </a>
+      <%var vis=0;%>
+      <% for(var z=0;z<following.length;z++){%>
+      <%if(JSON.stringify(following[z])===JSON.stringify(theuser._id)){vis++;%>
+
+        <form action="/unfollow" method="POST">
+          <input type="hidden" type="text" name="userid" value="<%=theuser._id%>"><br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button class="btn btn-light btn-dark" type="submit" style="font-size:16px">- Unfollow</button>
         </form>
-        <%}%>
+        <%}}if(vis===0){%>
 
+      <form action="/eachuser" method="POST">
+        <input type="hidden" type="text" name="userid" value="<%=theuser._id%>"> <br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button class="btn btn-light btn-dark" type="submit" style="font-size:16px">+ Follow</button> Click to follow
+      </form>
+      <%}%>
+    </div>
+  </div>
 
+  <div class="col-xs-12 col-sm-6 col-md-10">
+    <div class="" style="color:#8e24aa;">
+      <h2  style="  border-radius: 3px;"> &nbsp;&nbsp;<a style="" href="/eachuser/<%=theuser._id%>"><%=theuser.displayname%></a></h2>
+        <p> &nbsp;&nbsp;&nbsp;About the author:<br> &nbsp;&nbsp;&nbsp;<%=theuser.about%></p>
+        <table width="100%">
+        <tr  style="background-color: #8e24aa; color:white; padding:6px;">
+        	<th >Blogs</th>
+          <th>Followers</th>
+          <th>Following</th>
 
-<%for(var i=0;i<theuser.secret.length;i++){%>
-<h3 class="secret-text" ><%= theuser.secret[i].title%></h3><br>
-<p style="color:green;"><%=  theuser.secret[i].content%></p>
+        </tr>
+        <tr>
+          <th ><%= theuser.secret.length%></th>
+          <th><%= theuser.followers.length%></th>
+          <th><%= theuser.following.length-1%></th>
+        </tr>
+</table>
+    </div>
+  </div>
+</div>
+</div><hr style="height:3px;border-width:0;color:gray;background-color:#8e24aa">
+  <h1 style="background-color:#8e24aa; opacity:; padding:5px; border-radius:3px;"> &nbsp;All blogs:</h1><br>
+
+  <%for(var i=0;i<theuser.secret.length;i++){%>
+<h1 ><%= theuser.secret[i].title%></h1>
+<p><%=  theuser.secret[i].content.substring(0,150) + " ..."%>
+
+<a style="color:#8e24aa" href="/eachpost/<%=theuser.secret[i]._id%>">Read More</a><br>
+<br>
+
+<% for(var l=0;l<theuser.secret[i].tags.length;l++){%>
+<span style="color:white; background:#8e24aa; padding:4px; border-radius:3px;"><%=  theuser.secret[i].tags[l]%></span>
+  <% } %>
+</p><br>
 <% if(theuser.secret[i].blogImg!=undefined){ var str=theuser.secret[i].blogImg;%>
     <% var ext = str.substring(str.lastIndexOf("."),str.length+1);%>
     <% if(ext=== ".MP4" || ext=== ".MOV" || ext=== ".WMV" || ext=== ".WEBM" || ext=== ".mp4"){%>
-  <video  style=" width:50%;" autoplay poster="posterimage.jpg" controls>
+  <video  style=" width:33%; margin-left: auto;margin-right: auto;" autoplay poster="posterimage.jpg" controls>
     <source src="/upload/<%= theuser.secret[i].blogImg%>" type="video/mp4">
   </video>
     <% } else{%>
-        <img style=" width:50%;" alt="here is it <%=theuser.secret[i].blogImg%>" src="/upload/<%= theuser.secret[i].blogImg%>">
+        <img style=" width:33%; object-fit: cover; margin-left: auto;margin-right: auto;" alt="here is it <%=theuser.secret[i].blogImg%>" src="/upload/<%= theuser.secret[i].blogImg%>">
         <% } %>
-
 <% } %>
 <% if(theuser.secret[i].blogImg2!=undefined){var str=theuser.secret[i].blogImg2;%>
     <% var ext = str.substring(str.lastIndexOf("."),str.length+1);%>
     <% if(ext=== ".MP4" || ext=== ".MOV" || ext=== ".WMV" || ext=== ".WEBM" || ext=== ".mp4"){%>
-  <video  style=" width:50%;" autoplay poster="posterimage.jpg" controls>
+  <video  style=" width:33%; margin-left: auto;margin-right: auto;" autoplay poster="posterimage.jpg" controls>
     <source src="/upload/<%= theuser.secret[i].blogImg2%>" type="video/mp4">
   </video>
     <% } else{%>
-<img style=" width:50%;" alt="here is it <%=theuser.secret[i].blogImg%>" src="/upload/<%= theuser.secret[i].blogImg2%>">
+<img style=" width:33%; margin-left: auto;margin-right: auto;" alt="here is it <%=theuser.secret[i].blogImg%>" src="/upload/<%= theuser.secret[i].blogImg2%>">
   <% } %>
 <% } %>
 <% if(theuser.secret[i].blogImg3!=undefined){var str=theuser.secret[i].blogImg3;%>
   <% var ext = str.substring(str.lastIndexOf("."),str.length+1);%>
   <% if(ext=== ".MP4" || ext=== ".MOV" || ext=== ".WMV" || ext=== ".WEBM" || ext=== ".mp4"){%>
-<video  style=" width:50%;" autoplay poster="posterimage.jpg" controls>
+<video  style=" width:33%; margin-left: auto;margin-right: auto;" autoplay poster="posterimage.jpg" controls>
   <source src="/upload/<%= theuser.secret[i].blogImg3%>" type="video/mp4">
 </video>
   <% } else{%>
-<img style=" width:50%;" alt="here is it <%=theuser.secret[i].blogImg%>" src="/upload/<%= theuser.secret[i].blogImg3%>">
+<img style=" width:33%; margin-left: auto;margin-right: auto;" alt="here is it <%=theuser.secret[i].blogImg%>" src="/upload/<%= theuser.secret[i].blogImg3%>">
 <% } %>
 <% } %>
-<br>
-<% for(var j=0;j<theuser.secret[i].tags.length;j++){%>
-<span style="color:white; background:darkblue;"><%=  theuser.secret[i].tags[j]%></span>
-  <% } %>
-
-
+<hr style="height:3px;border-width:0;color:gray;background-color:#8e24aa">
   <%}%>
-
-</div></div>
 </div>
+>
+<!-- yoooo -->
+
+
+
+
+
+
+
+
 
 <%- include('partials/footer') %>
