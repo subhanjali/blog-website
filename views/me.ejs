@@ -65,7 +65,7 @@
    a:hover {
      text-decoration: none;
      color: #8e24aa;
-     font-size:2.5rem;
+
    }
    * { padding:0;margin:0;}
 
@@ -117,7 +117,7 @@
    a:hover {
      text-decoration: none;
      color: #8e24aa;
-     font-size:2.1rem;
+     font-size:1.5rem;
    }
 
 
@@ -125,56 +125,62 @@
  <div class="parallax-container">
    <div class="parallax" speed="1.5"></div>
  </div>
-<div class="main-container">
-  <div class="profile-content">
-    <div class="profile-img">
-      <img alt="NO profile image" src="upload/<%=usersWithSecrets.profilepic%>" style=" width:20%;"/>
-      <div class="name">
-        <h2><%=usersWithSecrets.displayname%></h2>
-        <span><%=usersWithSecrets.about%></span>
-      </div>
-    </div>
-    <button class="edit">
+ <div class="containereu">
+   <div class="container">
+ <div class="row">
 
-      <a class="btn btn-light btn-lg" href="/myprofile" role="button"> <i class="fas fa-edit"></i>Edit</a>
-    </button>
+<div class="col-xs-12 col-sm-6 col-md-2">
+  <div class="">
+
+      <a href="/eachuser/<%=usersWithSecrets._id%>"><img alt="NO profile image" src="upload/<%=usersWithSecrets.profilepic%>" style="width:160px; height:160px ; padding:5px;border-style: dashed;   border-radius: 50%; object-fit: cover;"/></a>
+<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <button class="edit btn btn-light btn-dark" style="font-size:16px">
+<a class="" style="color:white;" href="/myprofile" role="button"> <i class="fas fa-edit"></i>Edit</a>
+      </button>
+    </div>
   </div>
-  <!-- break -->
-  <hr class="break" />
-  <div class="body-content">
 
+      <div class="col-xs-12 col-sm-6 col-md-10">
+        <div class=""  style="color:#8e24aa;">
+        <h2 style="  border-radius: 3px;"> &nbsp;&nbsp;<a style="" href="/eachuser/<%=usersWithSecrets._id%>"><%=usersWithSecrets.displayname%></a></h2>
+        <p> &nbsp;&nbsp;&nbsp;About the author:<br> &nbsp;&nbsp;&nbsp;<%=usersWithSecrets.about%></p>
+        <table width="100%">
+        <tr  style="background-color: #8e24aa; color:white; padding:6px;">
+        	<th >Blogs</th>
+          <th>Followers</th>
+          <th>Following</th>
 
-
-    <div class="main">
-      <div class="card bg-dark">
-        <p>Followers</p>
-        <p class="num"><%= usersWithSecrets.followers.length%></p>
-      </div>
-      <div class="card">
-        <p>Following</p>
-        <p class="num"><%= usersWithSecrets.following.length%></p>
-      </div>
-      <div class="card">
-        <p>Total blogs</p>
-        <p class="num"><%= usersWithSecrets.secret.length%></p>
+        </tr>
+        <tr>
+          <th ><%= usersWithSecrets.secret.length%></th>
+          <th><%= usersWithSecrets.followers.length%></th>
+          <th><%= usersWithSecrets.following.length-1%></th>
+        </tr>
+</table>
       </div>
     </div>
 
-    <h1 class="display-3">All your blogs</h1>
+  </div></div>
+  <hr style="height:3px;border-width:0;color:gray;background-color:#8e24aa">
+<h1 style="background-color:#8e24aa; opacity:; padding:5px; border-radius:3px;"> &nbsp;All your blogs:</h1><br>
 
     <% usersWithSecrets.secret.forEach((user, i) => {%>
-
-
-    <h3 class="" style="color:black;"><%= user.title%></h3><br>
-    <p><%=  user.content%></p>
+      <h1><%= user.title%></h1>
+    <p><%=  user.content.substring(0,150) + " ..."%></p>
+    <a style="color:#8e24aa" href="/eachpost/<%=user._id%>">Read More</a><br>
+    <br>Tags:
+    <% for(var l=0;l<user.tags.length;l++){%>
+     <span style="color:white; background:#8e24aa; padding:4px; border-radius:3px;"><%=  user.tags[l]%></span>
+      <% } %>
+    <br>    <br>
     <% if(user.blogImg!=undefined){var str=user.blogImg;%>
     <% var ext = str.substring(str.lastIndexOf("."),str.length+1);%>
     <% if(ext=== ".MP4" || ext=== ".MOV" || ext=== ".WMV" || ext=== ".WEBM" || ext=== ".mp4"){%>
-    <video style=" width:50%;" autoplay poster="posterimage.jpg" controls>
+    <video style="width:33%; margin-left: auto;margin-right: auto;" autoplay poster="posterimage.jpg" controls>
       <source src="upload/<%= user.blogImg%>" type="video/mp4">
     </video>
     <% } else{%>
-    <img style=" width:20%;" alt="here is it <%=user.blogImg%>" src="upload/<%= user.blogImg%>">
+    <img style=" width:33%; object-fit: cover; margin-left: auto;margin-right: auto;" alt="here is it <%=user.blogImg%>" src="upload/<%= user.blogImg%>">
     <% } %>
 
     <% } %>
@@ -182,43 +188,42 @@
     <% if(user.blogImg2!=undefined){var str=user.blogImg2;%>
     <% var ext = str.substring(str.lastIndexOf("."),str.length+1);%>
     <% if(ext=== ".MP4" || ext=== ".MOV" || ext=== ".WMV" || ext=== ".WEBM"  || ext=== ".mp4"){%>
-    <video style=" width:50%;" autoplay poster="posterimage.jpg" controls>
+    <video style=" width:33%; object-fit: cover; margin-left: auto;margin-right: auto;" autoplay poster="posterimage.jpg" controls>
       <source src="upload/<%= user.blogImg2%>" type="video/mp4">
     </video>
     <% } else{%>
-    <img style=" width:50%;" alt="here is it <%=user.blogImg%>" src="upload/<%= user.blogImg2%>">
+    <img style=" width:33%; object-fit: cover; margin-left: auto;margin-right: auto;" alt="here is it <%=user.blogImg%>" src="upload/<%= user.blogImg2%>">
     <% } %>
     <% } %>
     <% if(user.blogImg3!=undefined){var str=user.blogImg3;%>
     <% var ext = str.substring(str.lastIndexOf("."),str.length+1);%>
     <% if(ext=== ".MP4" || ext=== ".MOV" || ext=== ".WMV" || ext=== ".WEBM" || ext=== ".mp4"){%>
-    <video style=" width:50%;" autoplay poster="posterimage.jpg" controls>
+    <video style=" width:33%; object-fit: cover; margin-left: auto;margin-right: auto;" autoplay poster="posterimage.jpg" controls>
       <source src="upload/<%= user.blogImg2%>" type="video/mp4">
     </video>
     <% } else{%>
-    <img style=" width:50%;" alt="here is it <%=user.blogImg%>" src="upload/<%= user.blogImg3%>">
+    <img style=" width:33%; object-fit: cover; margin-left: auto;margin-right: auto;" alt="here is it <%=user.blogImg%>" src="upload/<%= user.blogImg3%>">
     <% } %>
     <% } %>
     <br>
-    <% for(var j=0;j<user.tags.length;j++){%>
-    <span style="color:white; background:darkblue;"><%=  user.tags[j]%></span>
-    <% } %><form action="/me" method="POST">
+
+
+    <form action="/me" method="POST"><br>
       <input type="hidden" type="text" name="theuser" value="<%=  theuser%>">
       <input type="hidden" type="text" name="theid" value="<%=  user._id%>">
-      <button type="submit" style="font-size:24px"><i class="fa fa-trash-o"></i></button>
+      <button class="edit btn  btn-lg btn-danger" type="submit" style="font-size:24px"><i class="fa fa-trash-o"></i></button>
     </form>
+    <hr style="height:3px;border-width:0;color:gray;background-color:#8e24aa">
+
 
     <%}) %>
     <%  %>
-<!-- bro -->
 
+  <a style="align:centre;"class="btn btn-light btn-lg" href="/logout" role="button">Log Out</a>
+    <a style="align:centre;"class="btn btn-dark btn-lg " href="/submit" role="button">Submit a blog</a>
 
-
-
-    <hr>
-    <a class="btn btn-light btn-lg" href="/logout" role="button">Log Out</a>
-    <a class="btn btn-dark btn-lg" href="/submit" role="button">Submit a blog</a>
-  </div>
+</div>
+</div>
 </div>
 
 <%- include('partials/footer') %>

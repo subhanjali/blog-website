@@ -178,11 +178,11 @@ td {
 
 <a style="color:#8e24aa" href="/eachpost/<%=theuser.secret[i]._id%>">Read More</a><br>
 <br>
-
+</p>Tags: 
 <% for(var l=0;l<theuser.secret[i].tags.length;l++){%>
 <span style="color:white; background:#8e24aa; padding:4px; border-radius:3px;"><%=  theuser.secret[i].tags[l]%></span>
   <% } %>
-</p><br>
+<br>
 <% if(theuser.secret[i].blogImg!=undefined){ var str=theuser.secret[i].blogImg;%>
     <% var ext = str.substring(str.lastIndexOf("."),str.length+1);%>
     <% if(ext=== ".MP4" || ext=== ".MOV" || ext=== ".WMV" || ext=== ".WEBM" || ext=== ".mp4"){%>

@@ -61,6 +61,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 mongoose.connect("mongodb://localhost:27017/userDB", {useNewUrlParser: true});
+
 mongoose.set("useCreateIndex", true);
 
 const userSchema = new mongoose.Schema ({
@@ -351,6 +352,10 @@ app.get("/logout", function(req, res){
   res.redirect("/");
 });
 
+app.get("/contact", function(req, res){
+  res.render("about");
+});
+
 app.post("/register", function(req, res){
   User.register({username: req.body.username}, req.body.password, function(err, user){
     if (err) {
@@ -639,7 +644,10 @@ app.post("/unfollow", function(req, res){
 
 
 
-
+let port =  process.env.PORT;
+if(port== null || ""){
+  port =3000;
+}
 app.listen('3000' || process.env.PORT, function() {
-  console.log("Server started on port 3000.");
+  console.log("Server started on port");
 });

@@ -1,16 +1,102 @@
 <%- include('partials/header') %>
-<div class="container rounded bg-white mt-5 mb-5">
-    <div class="row">
+<style media="screen">
+* { padding:0;margin:0;}
+
+body { position:relative;width:100%;}
+
+.parallax-container {
+  position:relative;
+  overflow:hidden;
+  height: 350px;
+}
+
+
+.parallax {
+  position:absolute;
+  top:0;
+  height:120%;
+  width:100%;
+
+  background-image:url(https://i.pinimg.com/originals/de/06/e1/de06e1b1e4a49f033f52d1ae0a2d49ad.png);
+  background-color:#8e24aa;
+  background-size:cover;
+}
+
+h1,h3,p,h2,blockquote,li { font-family:'Merriweather', sans-serif;font-weight:300;}
+
+.containereu {
+  width:80%;
+
+  position:relative;
+  top:-250px;
+
+  background-color:#fff;
+  margin:0 auto;
+
+  padding:50px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1), 0 16px 48px rgba(0, 0, 0, 0.2);
+}
+
+h1 { font-size:50px;margin-bottom:10px;}
+h3 { font-size:18px;margin-bottom:20px;}
+h2 { font-size:34px;margin-bottom:10px;}
+p,blockquote { font-size:19px;}
+li { font-size:19px;}
+
+p,ul { margin-bottom:20px;}
+blockquote { margin-left:35px;}
+a {
+  color: black;
+}
+a:hover {
+  text-decoration: none;
+  color: #8e24aa;
+  font-size:2.5rem;
+}
+.custom-file-upload {
+  background-color:#8e24aa;
+color:white;
+    display: inline-block;
+    padding: 10px 10px 10px 10px ;
+    cursor: pointer;
+    border-radius:6px;
+}
+.labelll{
+    padding: 6px;
+    background: #8e24aa;
+    display: table;
+    border-radius:6px;
+    cursor: pointer;
+    color: white;
+     }
+
+
+
+input[type="file"] {
+    display: none;
+}
+</style>
+
+<!-- here -->
+  <div class="parallax-container">
+    <div class="parallax" speed="1.5"></div>
+  </div>
+  <div class="containereu">
+    <div class="container">
+  <div class="row">
+
+
       <form  action="/myprofile" method="POST" enctype="multipart/form-data">
 
 
-        <div class="col-md-3 border-right">
+        <div class="col-md-12">
 
-            <div class="d-flex flex-column align-items-center text-center p-3 py-5"><label class="labels">Your current profile</label><img class="rounded-circle mt-5" style="width:150px;" src="upload/<%=usersWithSecrets.profilepic%>"><span class="font-weight-bold"><%=usersWithSecrets.displayname %></span><span class="text-black-50"><%=usersWithSecrets.about %></span><span> </span></div>
+            <div class="d-flex flex-column align-items-center text-center p-1 py-4"><h4 style="">Your current profile</h4>
+              <img class="rounded-circle mt-5" style="width:160px; height:160px ; padding:5px;border-style: dashed;   border-radius: 50%; object-fit: cover;"  src="upload/<%=usersWithSecrets.profilepic%>"><br><span style="color:#8e24aa" class="font-weight-bold"><h3><b><%=usersWithSecrets.displayname %></b></h3></span><span  class=""><i><%=usersWithSecrets.about %></i></span></div>
 
-        </div>
-        <div class="col-md-5 border-right">
-            <div class="p-3 py-5">
+        </div><hr style="height:3px;border-width:0;color:gray;background-color:#8e24aa">
+        <div class="col-md-12">
+
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <h4 class="text-right">Profile Settings</h4>
                 </div>
@@ -19,29 +105,29 @@
               </div>
                 <div class="row mt-3">
                   <div class="col-md-12"><label class="labels">About Yourself</label><input name="about" class="form-control" placeholder="Introduce yourself!" rows="4" cols="50" value="<%=usersWithSecrets.about %>"></input></div>
-                  <br><div class="col-md-12"><label class="labels">Registered email</label>
+                  <br><br /> <div class="col-md-12"><br><label class="labels">Registered email</label>
                     <% if(usersWithSecrets.username!=undefined){ %>
                       <br><p><%=usersWithSecrets.username %></p></div>
                       <% } else{%>
                       <br><p>You've signed up with google</p></div>
                       <% } %>
-                      Select an image to upload:
-                      <input type="file" name="profilepic" accept='image/*'>
-                      <div class="mt-5 text-center"><button type="submit" class="btn btn-primary profile-button" >Save Profile</button></div>
-                  </div>
+                      <div class="">
+                        &nbsp;&nbsp;&nbsp;&nbsp;Select an profile image to upload:&nbsp;&nbsp;<br>
+                      </div>
+                      <label for="pp" class="labelll">&nbsp;&nbsp;+&nbsp;&nbsp;</label>
+                      <input id="pp"type="file" name="profilepic" accept='image/*'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <div class="mt-5 "><button type="submit" class="btn btn-dark profile-button" >Save Profile</button></div>
+
             </div>
 
 
 </form>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="p-3 py-5">
 
-            </div>
-        </div>
+</div>
     </div>
 </div>
 </div>
+</div></div>
+
 </div>
 <%- include('partials/footer') %>
