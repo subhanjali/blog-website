@@ -1,52 +1,114 @@
 
 <%- include("partials/header"); -%>
-<div class="container" style="">
-  <div class="container-fluid ">
+<style media="screen">
+* { padding:0;margin:0;}
 
+body { position:relative;width:100%;}
+
+.parallax-container {
+  position:relative;
+  overflow:hidden;
+  height: 350px;
+}
+
+.parallax {
+  position:absolute;
+  top:0;
+  height:120%;
+  width:100%;
+
+  background-image:url(https://i.pinimg.com/originals/de/06/e1/de06e1b1e4a49f033f52d1ae0a2d49ad.png);
+  background-color:#8e24aa;
+  background-size:cover;
+}
+
+h1,h3,p,h2,blockquote,li { font-family:'Merriweather', sans-serif;font-weight:300;}
+
+.containereu {
+  width:80%;
+
+  position:relative;
+  top:-250px;
+
+  background-color:#fff;
+  margin:0 auto;
+
+  padding:50px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1), 0 16px 48px rgba(0, 0, 0, 0.2);
+}
+
+h1 { font-size:50px;margin-bottom:10px;}
+h3 { font-size:18px;margin-bottom:20px;}
+h2 { font-size:34px;margin-bottom:10px;}
+p,blockquote { font-size:19px;}
+li { font-size:19px;}
+
+p,ul { margin-bottom:20px;}
+blockquote { margin-left:35px;}
+a {
+  color: black;
+}
+a:hover {
+  text-decoration: none;
+  color: #8e24aa;
+  font-size:2.5rem;
+}
+
+</style>
+<div class="parallax-container">
+  <div class="parallax" speed="1.5"></div>
+</div>
+<div class="containereu">
+  <div class="container">
+<div class="row">
+</div></div>
   <% var no =0;%>
   <%  posts.forEach(function(post){ %>
 
 <%  for(var i=0;i<post.secret.length;i++){ %>
   <% if(post.secret[i].title.includes(searched)){no++;%>
-    <h2>Search results by title</h2>
+    <h1>Search results by title</h1>
+    <hr style="height:6px;border-width:0;color:gray;background-color:#8e24aa">
 
 
-
-    <h4 style=""><%=post.secret[i].title%></h4><br>
+    <h4 style=""><%=post.secret[i].title%></h4>
     <p style="">
-    <%=post.secret[i].content.substring(1, 150)+ " ..."%>
-    <a href="/eachpost/<%=post.secret[i]._id%>">Read More</a>
+    <%=post.secret[i].content.substring(0, 150)+ " ..."%>
+    <a style="color:#8e24aa;" href="/eachpost/<%=post.secret[i]._id%>">Read More</a>
     <br>
     <% for(var l=0;l<post.secret[i].tags.length;l++){%>
-    <span style="color:white; background:darkblue;"><%=  post.secret[i].tags[l]%></span>
+    <span  style="color:white; background:#8e24aa; padding:4px; border-radius:3px;"><%=  post.secret[i].tags[l]%></span>
+
       <% } %>
-    </p>
+    </p><hr style="height:3px;border-width:0;color:gray;background-color:#8e24aa">
 <%}%>
     <% }}) %>
     <%if(no===0){ %>
     <h3 style="">Sorry! No blogs with the searched title!</h3>
+    <hr style="height:3px;border-width:0;color:gray;background-color:#8e24aa">
       <%} %>
       <% var nope=0;%>
       <%  posts.forEach(function(post){ %>
 
     <%  for(var i=0;i<post.secret.length;i++){  %>
       <%for(var j=0;j<post.secret[i].tags.length;j++) if(post.secret[i].tags[j].includes(searched)){nope++;%>
-        <h2>Search results by tags</h2>
+        <br><h1>Search results by tags</h1><hr style="height:6px;border-width:0;color:gray;background-color:#8e24aa">
         <h4 style=""><%=post.secret[i].title%></h4>
         <p style="">
         <%=post.secret[i].content.substring(0, 150)+ " ..."%>
 
-  <a href="/eachpost/<%=post.secret[i]._id%>">Read More</a><br>
+  <a style="color:#8e24aa;" href="/eachpost/<%=post.secret[i]._id%>">Read More</a><br>
 
 
         <% for(var l=0;l<post.secret[i].tags.length;l++){%>
-        <span style="color:white; background:darkblue;"><%=  post.secret[i].tags[l]%></span>
+        <span  style="color:white; background:#8e24aa; padding:4px; border-radius:3px;"><%=  post.secret[i].tags[l]%></span>
           <% } %>
-        </p>
+        </p><hr style="height:3px;border-width:0;color:gray;background-color:#8e24aa">
     <%}%>
         <% }}) %>
         <%if(nope===0){ %>
         <h3 style="">Sorry! No blogs with the searched tag!</h3>
+        <hr style="height:3px;border-width:0;color:gray;background-color:#8e24aa">
           <%} %>
           <!-- <h3>3 Columns</h3>
 
@@ -76,5 +138,5 @@
 
 
 
-</div></div>
+</div>
 <%- include("partials/footer"); -%>

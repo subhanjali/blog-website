@@ -324,7 +324,8 @@ app.post("/myprofile",upload.single('profilepic'), function(req, res){
   const displayname = req.body.displayname;
   const about = req.body.about;
   var profilepic ;
-  if(req.file.filename !=undefined)
+
+  if(req.file !=undefined)
   profilepic = req.file.filename;
 
   User.findById(req.user.id, function(err, foundUser){
@@ -334,7 +335,8 @@ app.post("/myprofile",upload.single('profilepic'), function(req, res){
       if (foundUser) {
         foundUser.displayname=displayname;
         foundUser.about=about;
-        foundUser.profilepic=profilepic;
+        if(profilepic===undefined);
+        else foundUser.profilepic=profilepic;
         foundUser.save(function(){
           res.redirect("/secrets");
         });

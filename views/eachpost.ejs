@@ -85,7 +85,7 @@ a:hover {
     <% if(JSON.stringify(posts.secret[i]._id)===JSON.stringify(theid)){%>
       <h1><%=posts.secret[i].title%></h1>
 
-      Favourites ❤️: <%=posts.secret[i].favourites.length%><br><br>
+      <span style="color:white; background:#8e24aa; padding:4px; border-radius:3px;">Favourites ❤️: </span> &nbsp;&nbsp;<%=posts.secret[i].favourites.length%><br><br>
     TAGS:   <% for(var l=0;l<posts.secret[i].tags.length;l++){%>
       <span style="color:white; background:#8e24aa; padding:4px; border-radius:3px;"><%=  posts.secret[i].tags[l]%></span>
         <% } %><br><br>
